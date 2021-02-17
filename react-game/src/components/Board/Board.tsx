@@ -25,11 +25,3 @@ const Board = () => {
 };
 
 export default Board;
-
-// {board.map((row, x) => {
-//   <div key={row[0].id} className="Board-row">
-//     {row.map((cell, y) => {
-//       <Cell key={cell.id} />;
-//     })}
-//   </div>;
-// })}
