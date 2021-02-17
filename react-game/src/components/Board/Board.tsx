@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Cell from '../Cell/Cell';
 import './Board.scss';
 
-class Board extends Component {
-  render() {
-    return <div className="Board" />;
-  }
-}
+const Board = () => {
+  return (
+    <div className="Board">
+      <Cell />
+    </div>
+  );
+};
 
 export default Board;
