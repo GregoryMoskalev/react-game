@@ -8,14 +8,14 @@ const COLUMNS = 10;
 
 const board = createMatrix(ROWS, COLUMNS);
 
-const Board = () => {
+const Board: React.FC = () => {
   return (
     <div className="Board">
       {board.map((row, x) => {
         return (
           <div key={x} className="Board-row">
             {row.map((cell, y) => {
-              return <Cell key={`${x}-${y}`} />;
+              return <Cell key={`${x}-${y}`} cell={cell} />;
             })}
           </div>
         );

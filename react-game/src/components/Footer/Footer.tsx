@@ -2,7 +2,7 @@ import React from 'react';
 import rsLogo from '../../assets/rs_school_js.svg';
 import './Footer.scss';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <footer className="Footer">
       <p>
