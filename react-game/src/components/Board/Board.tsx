@@ -1,14 +1,18 @@
 import React from 'react';
 import Cell from '../Cell/Cell';
-import createMatrix from '../../utils/utils';
+import { createMatrix, createRandomListOfCoordinats, plantBugs } from '../../utils/utils';
 import './Board.scss';
 
 const ROWS = 10;
 const COLUMNS = 10;
 
-const board = createMatrix(ROWS, COLUMNS);
+const emptyBoard = createMatrix(ROWS, COLUMNS);
+const listOfBombs = createRandomListOfCoordinats(10, ROWS, COLUMNS);
+const board = plantBugs(emptyBoard, listOfBombs);
 
 const Board: React.FC = () => {
+  console.log(createRandomListOfCoordinats(10, ROWS, COLUMNS));
+
   return (
     <div className="Board">
       {board.map((row, x) => {

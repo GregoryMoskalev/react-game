@@ -6,7 +6,7 @@ interface CellProps {
 }
 
 const Cell: React.FC<CellProps> = (props) => {
-  return <div className="Cell">B</div>;
+  return <div className="Cell">{props.cell ? 'B' : ''}</div>;
 };
 
 export default Cell;
