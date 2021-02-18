@@ -1,3 +1,5 @@
+type FieldOfBugs = (number | string)[][];
+
 export const createMatrix = (x: number, y: number) => {
   return new Array(x).fill(0).map(() => new Array(y).fill(0));
 };
@@ -14,7 +16,7 @@ export const createRandomListOfCoordinats = (n: number, maxX: number, maxY: numb
   return Array.from(list) as string[]; // spreading cause a TS warning
 };
 
-export const plantBugs = (field: (string | number)[][], bugsCoords: string[]) => {
+export const plantBugs = (field: (string | number)[][], bugsCoords: string[]): FieldOfBugs => {
   const arr = [...field];
   bugsCoords.forEach((c: string) => {
     const [x, y] = c.split('-');
