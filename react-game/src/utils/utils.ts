@@ -1,4 +1,4 @@
-interface Properties {
+export interface Properties {
   value: number | string;
   open: boolean;
   flag: boolean;

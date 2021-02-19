@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Cell from '../Cell/Cell';
 import {
   createMatrix,
@@ -13,16 +13,39 @@ const COLUMNS = 10;
 
 const emptyBoard = addProperties(createMatrix(ROWS, COLUMNS, 0));
 const listOfBombs = createRandomListOfCoordinats(10, ROWS, COLUMNS);
-const board = plantBugs(emptyBoard, listOfBombs);
+const field = plantBugs(emptyBoard, listOfBombs);
 
 const Board: React.FC = () => {
+  const [board, setBoardProps] = useState(field);
+
+  const handleClick = (x: number, y: number, e: any) => {
+    e.preventDefault();
+    const arr = [...board];
+    arr[x][y].open = true;
+    setBoardProps(arr);
+  };
+
+  const handleContextMenu = (x: number, y: number, e: any) => {
+    e.preventDefault();
+    const arr = [...board];
+    arr[x][y].flag = !arr[x][y].flag;
+    setBoardProps(arr);
+  };
+
   return (
     <div className="Board">
       {board.map((row, x) => {
         return (
           <div key={x} className="Board-row">
             {row.map((cell, y) => {
-              return <Cell key={`${x}-${y}`} cell={cell.value} />;
+              return (
+                <Cell
+                  key={`${x}-${y}`}
+                  cell={cell.value}
+                  handleClick={(e) => handleClick(x, y, e)}
+                  handleContextMenu={(e) => handleContextMenu(x, y, e)}
+                />
+              );
             })}
           </div>
         );
