@@ -25,7 +25,12 @@ const Cell: React.FC<CellProps> = (props) => {
     classList += 'blue';
   }
   return (
-    <div className={classList} onClick={props.handleClick} onContextMenu={props.handleContextMenu}>
+    <div
+      style={{ color: props.cell.open ? '' : 'transparent' }}
+      className={classList}
+      onClick={props.handleClick}
+      onContextMenu={props.handleContextMenu}
+    >
       {props.cell.value ? `${props.cell.value}` : ''}
     </div>
   );
