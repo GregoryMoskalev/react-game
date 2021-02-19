@@ -17,6 +17,17 @@ const emptyBoard = addProperties(createMatrix(ROWS, COLUMNS, 0));
 const listOfBombs = createRandomListOfCoordinats(BOMBS, ROWS, COLUMNS);
 const field = plantBugs(emptyBoard, listOfBombs);
 
+const checkWin = () => {
+  if (
+    listOfBombs.every((e) => {
+      const [x, y] = e.split('-').map((e) => Number(e));
+      return field[x][y].flag;
+    })
+  ) {
+    alert('you win!');
+  }
+};
+
 const Board: React.FC = () => {
   const [board, setBoardProps] = useState(field);
   const [flagCounter, setFlagCounter] = useState(BOMBS);
@@ -34,7 +45,7 @@ const Board: React.FC = () => {
 
   const handleContextMenu = (x: number, y: number, e: any) => {
     e.preventDefault();
-    if (!board[x][y].open && flagCounter > 0) {
+    if (!board[x][y].open && (flagCounter > 0 || board[x][y].flag)) {
       const arr = [...board];
       setFlagCounter(arr[x][y].flag ? flagCounter + 1 : flagCounter - 1);
       arr[x][y].flag = !arr[x][y].flag;
@@ -44,14 +55,7 @@ const Board: React.FC = () => {
 
   useEffect(() => {
     if (flagCounter === 0) {
-      if (
-        listOfBombs.every((e) => {
-          const [x, y] = e.split('-').map((e) => Number(e));
-          return field[x][y].flag;
-        })
-      ) {
-        alert('you win!');
-      }
+      checkWin();
     }
   });
 
