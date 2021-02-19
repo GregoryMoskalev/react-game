@@ -11,9 +11,18 @@ interface CellProps {
 const Cell: React.FC<CellProps> = (props) => {
   let classList = 'Cell ';
   if (props.cell.flag) {
-    classList += 'Cell-flag';
+    classList += 'Cell-flag ';
   } else if (props.cell.open) {
-    classList += props.cell.value === 'B' ? 'Cell-bomb' : 'Cell-open';
+    classList += props.cell.value === 'B' ? 'Cell-bomb ' : 'Cell-open ';
+  }
+  if (props.cell.value > 3) {
+    classList += 'purple';
+  } else if (props.cell.value === 3) {
+    classList += 'red';
+  } else if (props.cell.value === 2) {
+    classList += 'green';
+  } else if (props.cell.value === 1) {
+    classList += 'blue';
   }
   return (
     <div className={classList} onClick={props.handleClick} onContextMenu={props.handleContextMenu}>
