@@ -5,6 +5,7 @@ import {
   createRandomListOfCoordinats,
   plantBugs,
   addProperties,
+  openEmptyTiles,
 } from '../../utils/utils';
 import './Board.scss';
 
@@ -20,16 +21,22 @@ const Board: React.FC = () => {
 
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
-    const arr = [...board];
-    arr[x][y].open = true;
-    setBoardProps(arr);
+    if (!board[x][y].flag) {
+      if (board[x][y].value === 'B') alert('You lose!');
+      let arr = [...board];
+      arr[x][y].open = true;
+      arr = openEmptyTiles(x, y, arr);
+      setBoardProps(arr);
+    }
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
     e.preventDefault();
-    const arr = [...board];
-    arr[x][y].flag = !arr[x][y].flag;
-    setBoardProps(arr);
+    if (!board[x][y].open) {
+      const arr = [...board];
+      arr[x][y].flag = !arr[x][y].flag;
+      setBoardProps(arr);
+    }
   };
 
   return (
@@ -41,7 +48,7 @@ const Board: React.FC = () => {
               return (
                 <Cell
                   key={`${x}-${y}`}
-                  cell={cell.value}
+                  cell={cell}
                   handleClick={(e) => handleClick(x, y, e)}
                   handleContextMenu={(e) => handleContextMenu(x, y, e)}
                 />

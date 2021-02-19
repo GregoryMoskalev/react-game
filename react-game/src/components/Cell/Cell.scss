@@ -6,4 +6,14 @@
   justify-content: center;
   border: 1px solid black;
   background-color: #bbb;
+
+  &.Cell-flag {
+    background-color: orange;
+  }
+  &.Cell-open {
+    background-color: #eee;
+  }
+  &.Cell-bomb {
+    background-color: red;
+  }
 }

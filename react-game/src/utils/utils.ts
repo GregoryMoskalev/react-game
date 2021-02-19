@@ -1,13 +1,39 @@
-export interface Properties {
-  value: number | string;
-  open: boolean;
-  flag: boolean;
-}
+export interface TileProps extends Record<string, string | boolean | number> {}
 
-type FieldOfBugs = Properties[][];
+type FieldOfBugs = TileProps[][];
 
 export const createMatrix = (x: number, y: number, fill: any) => {
   return new Array(x).fill(0).map(() => new Array(y).fill(fill));
+};
+
+const isTileExist = (x: number, y: number, field: FieldOfBugs) => {
+  return x < field.length && x >= 0 && y < field[0].length && y >= 0;
+};
+const isTileNotABug = (x: number, y: number, field: FieldOfBugs) => {
+  return typeof field[x][y].value === 'number';
+};
+
+const openTile = (x: number, y: number, field: FieldOfBugs) => {
+  if (isTileExist(x, y, field) && isTileNotABug(x, y, field) && !field[x][y].open) {
+    field[x][y].open = true;
+
+    openEmptyTiles(x, y, field);
+  }
+  return field;
+};
+
+export const openEmptyTiles = (x: number, y: number, field: FieldOfBugs): FieldOfBugs => {
+  if (!field[x][y].value) {
+    openTile(x + 1, y, field);
+    openTile(x + 1, y + 1, field);
+    openTile(x + 1, y - 1, field);
+    openTile(x - 1, y, field);
+    openTile(x - 1, y - 1, field);
+    openTile(x - 1, y + 1, field);
+    openTile(x, y + 1, field);
+    openTile(x, y - 1, field);
+  }
+  return field;
 };
 
 export const addProperties = (
@@ -34,13 +60,7 @@ export const createRandomListOfCoordinats = (n: number, maxX: number, maxY: numb
 };
 
 const bugCounter = (x: number, y: number, arr: FieldOfBugs): void => {
-  if (
-    x < arr.length &&
-    x >= 0 &&
-    y < arr[0].length &&
-    y >= 0 &&
-    typeof arr[x][y].value === 'number'
-  ) {
+  if (isTileExist(x, y, arr) && isTileNotABug(x, y, arr)) {
     arr[x][y].value = Number(arr[x][y].value) + 1;
   }
 };
