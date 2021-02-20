@@ -1,36 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Cell from '../Cell/Cell';
-import {
-  createMatrix,
-  createRandomListOfCoordinats,
-  plantBugs,
-  addProperties,
-  openEmptyTiles,
-} from '../../utils/utils';
+import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import './Board.scss';
 
-const ROWS = 10;
-const COLUMNS = 10;
-const BOMBS = 10;
+const rows = 10;
+const columns = 10;
+const bugs = 10;
 
-const emptyBoard = addProperties(createMatrix(ROWS, COLUMNS, 0));
-const listOfBombs = createRandomListOfCoordinats(BOMBS, ROWS, COLUMNS);
-const field = plantBugs(emptyBoard, listOfBombs);
-
-const checkWin = () => {
-  if (
-    listOfBombs.every((e) => {
-      const [x, y] = e.split('-').map((e) => Number(e));
-      return field[x][y].flag;
-    })
-  ) {
-    alert('you win!');
-  }
-};
+const [field, arrOfBugs] = plantBugs(rows, columns, bugs);
 
 const Board: React.FC = () => {
   const [board, setBoardProps] = useState(field);
-  const [flagCounter, setFlagCounter] = useState(BOMBS);
+  const [flagCounter, setFlagCounter] = useState(bugs);
+  const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
 
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
@@ -50,6 +32,17 @@ const Board: React.FC = () => {
       setFlagCounter(arr[x][y].flag ? flagCounter + 1 : flagCounter - 1);
       arr[x][y].flag = !arr[x][y].flag;
       setBoardProps(arr);
+    }
+  };
+
+  const checkWin = () => {
+    if (
+      listOfBugs.every((e) => {
+        const [x, y] = e.split('-').map((e) => Number(e));
+        return field[x][y].flag;
+      })
+    ) {
+      alert('you win!');
     }
   };
 

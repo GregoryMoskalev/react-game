@@ -1,12 +1,12 @@
 import React from 'react';
+import Board from '../Board/Board';
 import Footer from '../Footer/Footer';
-import Game from '../Game/Game';
 import './App.scss';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <Game />
+      <Board />
       <Footer />
     </div>
   );
