@@ -13,11 +13,24 @@ const Board: React.FC = () => {
   const [board, setBoardProps] = useState(field);
   const [flagCounter, setFlagCounter] = useState(bugs);
   const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
+  const [heading, setHeading] = useState('Bugswapper');
+
+  const onLose = () => {
+    // open all bugs
+    listOfBugs.forEach((e) => {
+      const [x, y] = e;
+      board[x][y].open = true;
+    });
+    // msg you lose
+    setHeading('You lose! 🤣');
+  };
 
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
     if (!board[x][y].flag) {
-      if (board[x][y].value === 'B') alert('You lose!');
+      if (board[x][y].value === 'B') {
+        onLose();
+      }
       const arr = [...board];
       arr[x][y].open = true;
       openEmptyTiles(x, y, arr);
@@ -42,7 +55,7 @@ const Board: React.FC = () => {
         return field[x][y].flag;
       })
     ) {
-      alert('you win!');
+      alert('you win! 🤗');
     }
   };
 
@@ -54,6 +67,7 @@ const Board: React.FC = () => {
 
   return (
     <div className="Board">
+      <h1>{heading}</h1>
       <p>flags:{flagCounter}</p>
       {board.map((row, x) => {
         return (
