@@ -48,12 +48,14 @@ const randomInteger = (max: number): number => {
   return Math.floor(Math.random() * Math.floor(max));
 };
 
-const createRandomListOfCoordinats = (n: number, maxX: number, maxY: number): string[] => {
+const createRandomListOfCoordinats = (n: number, maxX: number, maxY: number): number[][] => {
   const list = new Set();
   while (list.size < n) {
     list.add(`${randomInteger(maxX)}-${randomInteger(maxY)}`);
   }
-  return Array.from(list) as string[]; // spreading cause a TS warning
+  const arr = Array.from(list) as string[];
+
+  return arr.map((s) => s.split('-').map((e) => Number(e))); // spreading cause a TS warning
 };
 
 const bugCounter = (x: number, y: number, arr: FieldOfBugs): void => {
@@ -62,11 +64,15 @@ const bugCounter = (x: number, y: number, arr: FieldOfBugs): void => {
   }
 };
 
-export const plantBugs = (rows: number, columns: number, bugs: number): [FieldOfBugs, string[]] => {
+export const plantBugs = (
+  rows: number,
+  columns: number,
+  bugs: number,
+): [FieldOfBugs, number[][]] => {
   const arr: FieldOfBugs = addProperties(createMatrix(rows, columns, 0));
   const listOfBugs = createRandomListOfCoordinats(bugs, rows, columns);
-  listOfBugs.forEach((c: string) => {
-    const [x, y] = c.split('-').map((e) => Number(e));
+  listOfBugs.forEach((c: number[]) => {
+    const [x, y] = c;
     arr[x][y].value = 'B';
     bugCounter(x + 1, y, arr);
     bugCounter(x + 1, y + 1, arr);

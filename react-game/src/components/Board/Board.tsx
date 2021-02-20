@@ -38,7 +38,7 @@ const Board: React.FC = () => {
   const checkWin = () => {
     if (
       listOfBugs.every((e) => {
-        const [x, y] = e.split('-').map((e) => Number(e));
+        const [x, y] = e;
         return field[x][y].flag;
       })
     ) {
