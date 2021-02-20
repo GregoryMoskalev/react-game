@@ -13,7 +13,10 @@ const Cell: React.FC<CellProps> = (props) => {
   if (props.cell.flag) {
     classList += 'Cell-flag ';
   } else if (props.cell.open) {
-    classList += props.cell.value === 'B' ? 'Cell-bomb ' : 'Cell-open ';
+    classList += 'Cell-open ';
+    if (props.cell.value === 'B') {
+      classList += 'Cell-bomb';
+    }
   }
   if (props.cell.value > 3) {
     classList += 'purple';
@@ -31,7 +34,15 @@ const Cell: React.FC<CellProps> = (props) => {
       onClick={props.handleClick}
       onContextMenu={props.handleContextMenu}
     >
-      {props.cell.value ? `${props.cell.value}` : ''}
+      {props.cell.value ? props.cell.value === 'B' ? (
+        <div className={props.cell.open ? 'material-icons glitch' : ''} data-text="pest_control">
+          pest_control
+        </div>
+      ) : (
+        `${props.cell.value}`
+      ) : (
+        ''
+      )}
     </div>
   );
 };

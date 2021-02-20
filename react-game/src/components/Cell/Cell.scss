@@ -4,28 +4,36 @@
   height: 60px;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
-  background-color: #bbb;
+  border: 1px solid #272727;
+  background-color: #212121;
+
+  & img {
+    opacity: 0;
+  }
 
   &.Cell-flag {
     background-color: orange;
   }
   &.Cell-open {
-    background-color: #eee;
+    background-color: #323232;
+    & div {
+      opacity: 1;
+      color: white;
+    }
   }
   &.Cell-bomb {
-    background-color: red;
+    background-color: #323232;
   }
   &.blue {
-    color: blue;
+    color: #3fc1c9;
   }
   &.green {
-    color: green;
+    color: #a7ff83;
   }
   &.red {
-    color: red;
+    color: #ffaaa5;
   }
   &.purple {
-    color: purple;
+    color: #c3bef0;
   }
 }

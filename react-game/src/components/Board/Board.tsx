@@ -5,7 +5,7 @@ import './Board.scss';
 
 const rows = 10;
 const columns = 10;
-const bugs = 10;
+const bugs = 20;
 
 const [field, arrOfBugs] = plantBugs(rows, columns, bugs);
 
