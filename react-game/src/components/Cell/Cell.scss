@@ -9,7 +9,17 @@
   border: 1px solid $color-primary;
   border-radius: 2px;
   background-color: $color-primary-dark-2;
+  transition: translate .3s ease, background-color .3s ease;
+
   &:hover:not(.Cell-open) {
+    transform: translateY(-1px);
+    border: 1px solid $color-primary-light-2;
+    background-color: $color-primary-dark-1;
+    cursor: pointer;
+  }
+
+  &:active:not(.Cell-open) {
+    transform: translateY(1px);
     border: 1px solid $color-primary-light-2;
     background-color: $color-primary-dark-1;
     cursor: pointer;
