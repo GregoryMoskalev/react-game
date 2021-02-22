@@ -12,7 +12,12 @@
   }
 
   &.Cell-flag {
-    background-color: orange;
+    // background-color: orange;
+    & div {
+      opacity: 1;
+      color: #ffc107;
+      font-size: 32px;
+    }
   }
   &.Cell-open {
     background-color: #323232;

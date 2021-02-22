@@ -8,8 +8,25 @@ interface CellProps {
   handleContextMenu: (e: any) => void;
 }
 
+const Bug: React.FC<{ open: boolean | string | number }> = (props) => {
+  return (
+    <div className={props.open ? 'material-icons glitch' : ''} data-text="pest_control">
+      pest_control
+    </div>
+  );
+};
+
+const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {
+  return (
+    <div className={props.flag ? 'material-icons' : ''} data-text="warning_amber">
+      warning_amber
+    </div>
+  );
+};
+
 const Cell: React.FC<CellProps> = (props) => {
   let classList = 'Cell ';
+  let content: JSX.Element | string = '';
   if (props.cell.flag) {
     classList += 'Cell-flag ';
   } else if (props.cell.open) {
@@ -27,6 +44,18 @@ const Cell: React.FC<CellProps> = (props) => {
   } else if (props.cell.value === 1) {
     classList += 'blue';
   }
+
+  if (props.cell.value) {
+    if (props.cell.value === 'B') {
+      content = <Bug open={props.cell.open} />;
+    } else {
+      content = String(props.cell.value);
+    }
+  }
+  if (props.cell.flag) {
+    content = <Flag flag={props.cell.flag} />;
+  }
+
   return (
     <div
       style={{ color: props.cell.open ? '' : 'transparent' }}
@@ -34,15 +63,7 @@ const Cell: React.FC<CellProps> = (props) => {
       onClick={props.handleClick}
       onContextMenu={props.handleContextMenu}
     >
-      {props.cell.value ? props.cell.value === 'B' ? (
-        <div className={props.cell.open ? 'material-icons glitch' : ''} data-text="pest_control">
-          pest_control
-        </div>
-      ) : (
-        `${props.cell.value}`
-      ) : (
-        ''
-      )}
+      {content}
     </div>
   );
 };
