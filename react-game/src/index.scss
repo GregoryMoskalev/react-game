@@ -25,6 +25,16 @@ body {
   font-size: 1.6rem;
 }
 
+a,
+button {
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: 2px solid orange;
+  }
+}
+
 a {
   color: #eee;
   text-decoration: none;
