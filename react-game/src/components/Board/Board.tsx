@@ -3,9 +3,9 @@ import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import './Board.scss';
 
-const r = 10;
-const c = 10;
-const b = 20;
+const r = 9;
+const c = 9;
+const b = 10;
 
 const [field, arrOfBugs] = plantBugs(r, c, b);
 

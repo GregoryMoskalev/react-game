@@ -14,7 +14,12 @@ const isTileNotABug = (x: number, y: number, field: FieldOfBugs) => {
 };
 
 const openTile = (x: number, y: number, field: FieldOfBugs) => {
-  if (isTileExist(x, y, field) && isTileNotABug(x, y, field) && !field[x][y].open) {
+  if (
+    isTileExist(x, y, field) &&
+    isTileNotABug(x, y, field) &&
+    !field[x][y].open &&
+    !field[x][y].flag
+  ) {
     field[x][y].open = true;
 
     openEmptyTiles(x, y, field);
