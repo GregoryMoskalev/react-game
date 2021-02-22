@@ -13,6 +13,12 @@ html {
   font-family: 'Roboto Mono', monospace;
 }
 
+@media screen and (max-width: 1020px) {
+  html {
+    font-size: 50%;
+  }
+}
+
 body {
   width: 100%;
   min-height: 100%;
@@ -39,6 +45,17 @@ button {
 a {
   color: #eee;
   text-decoration: none;
+}
+
+.h-1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 1rem;
+}
+.heading {
+  font-weight: 300;
+  letter-spacing: .2rem;
 }
 
 .glitch {
