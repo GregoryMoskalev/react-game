@@ -24,8 +24,6 @@ const Board: React.FC = () => {
       const [x, y] = e;
       board[x][y].open = true;
     });
-    // msg you lose
-    console.log('you lose');
   };
 
   const handleClick = (x: number, y: number, e: any) => {
