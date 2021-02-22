@@ -1,11 +1,45 @@
+@import '../../styles/variables';
 .Board {
   display: flex;
   flex-direction: column;
+  align-items: center;
   user-select: none;
   &-row {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.flag-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & .counter {
+    display: block;
+    margin-left: .5rem;
+    font-size: 2.4rem;
+  }
+}
+
+.NewGame {
+  display: flex;
+  width: 5rem;
+  height: 5rem;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 3.2rem;
+  background-color: $color-primary-dark-2;
+  border-radius: 2px;
+
+  &:hover {
+    font-size: 0;
+    background-color: $color-primary-dark-1;
+    &::before {
+      font-size: 3.2rem;
+      content: '😊';
+    }
   }
 }

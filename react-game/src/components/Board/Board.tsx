@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Cell from '../Cell/Cell';
+import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import './Board.scss';
 
@@ -16,7 +16,7 @@ const Board: React.FC = () => {
   const [board, setBoardProps] = useState(field);
   const [flagCounter, setFlagCounter] = useState(b);
   const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
-  const [heading, setHeading] = useState('Bugswapper');
+  const [button, setButton] = useState('🙂');
 
   const onLose = () => {
     // open all bugs
@@ -25,19 +25,25 @@ const Board: React.FC = () => {
       board[x][y].open = true;
     });
     // msg you lose
-    setHeading('You lose! 🤣');
+    console.log('you lose');
   };
 
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
+    let button = '🙂';
     if (!board[x][y].flag) {
       if (board[x][y].value === 'B') {
         onLose();
+        button = '💀';
       }
       const arr = [...board];
       arr[x][y].open = true;
       openEmptyTiles(x, y, arr);
       setBoardProps(arr);
+      setButton('😯');
+      setTimeout(() => {
+        setButton(button);
+      }, 200);
     }
   };
 
@@ -45,7 +51,7 @@ const Board: React.FC = () => {
     const [field, arrOfBugs] = plantBugs(rows, columns, bugs);
     setListOfBugs(arrOfBugs);
     setBoardProps(field);
-    setHeading('Bugswapper');
+    setButton('🙂');
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
@@ -65,7 +71,7 @@ const Board: React.FC = () => {
         return field[x][y].flag;
       })
     ) {
-      alert('you win! 🤗');
+      setButton('🥳');
     }
   };
 
@@ -77,9 +83,14 @@ const Board: React.FC = () => {
 
   return (
     <div className="Board">
-      <h1>{heading}</h1>
-      <button onClick={handleNewGame}>new game</button>
-      <p>flags:{flagCounter}</p>
+      <h1>Bugsweeper</h1>
+      <button className="NewGame" onClick={handleNewGame}>
+        {button}
+      </button>
+      <div className="flag-counter">
+        <Flag flag={true} />
+        <span className="counter">{flagCounter}</span>
+      </div>
       {board.map((row, x) => {
         return (
           <div key={x} className="Board-row">

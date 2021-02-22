@@ -16,9 +16,9 @@ const Bug: React.FC<{ open: boolean | string | number }> = (props) => {
   );
 };
 
-const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {
+export const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {
   return (
-    <div className={props.flag ? 'material-icons' : ''} data-text="warning_amber">
+    <div className="Flag material-icons" data-text="warning_amber">
       warning_amber
     </div>
   );
@@ -27,9 +27,7 @@ const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {
 const Cell: React.FC<CellProps> = (props) => {
   let classList = 'Cell ';
   let content: JSX.Element | string = '';
-  if (props.cell.flag) {
-    classList += 'Cell-flag ';
-  } else if (props.cell.open) {
+  if (props.cell.open) {
     classList += 'Cell-open ';
     if (props.cell.value === 'B') {
       classList += 'Cell-bomb';
