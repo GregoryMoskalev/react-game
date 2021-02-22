@@ -6,6 +6,11 @@
   justify-content: center;
   border: 1px solid #272727;
   background-color: #212121;
+  &:hover:not(.Cell-open) {
+    border: 1px solid #363636;
+    background-color: #242424;
+    cursor: pointer;
+  }
 
   & img {
     opacity: 0;
