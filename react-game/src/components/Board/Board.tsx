@@ -3,15 +3,18 @@ import Cell from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import './Board.scss';
 
-const rows = 10;
-const columns = 10;
-const bugs = 20;
+const r = 10;
+const c = 10;
+const b = 20;
 
-const [field, arrOfBugs] = plantBugs(rows, columns, bugs);
+const [field, arrOfBugs] = plantBugs(r, c, b);
 
 const Board: React.FC = () => {
+  const [rows, setRows] = useState(r);
+  const [columns, setColumns] = useState(c);
+  const [bugs, setBugs] = useState(b);
   const [board, setBoardProps] = useState(field);
-  const [flagCounter, setFlagCounter] = useState(bugs);
+  const [flagCounter, setFlagCounter] = useState(b);
   const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
   const [heading, setHeading] = useState('Bugswapper');
 
@@ -36,6 +39,13 @@ const Board: React.FC = () => {
       openEmptyTiles(x, y, arr);
       setBoardProps(arr);
     }
+  };
+
+  const handleNewGame = () => {
+    const [field, arrOfBugs] = plantBugs(rows, columns, bugs);
+    setListOfBugs(arrOfBugs);
+    setBoardProps(field);
+    setHeading('Bugswapper');
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
@@ -68,6 +78,7 @@ const Board: React.FC = () => {
   return (
     <div className="Board">
       <h1>{heading}</h1>
+      <button onClick={handleNewGame}>new game</button>
       <p>flags:{flagCounter}</p>
       {board.map((row, x) => {
         return (
