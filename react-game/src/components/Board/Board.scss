@@ -33,13 +33,27 @@
   font-size: 3.2rem;
   background-color: $color-primary-dark-2;
   border-radius: 2px;
+  transition: background-color .3s, transform .3s;
 
   &:hover {
     font-size: 0;
     background-color: $color-primary-dark-1;
+    transform: translateY(-1px);
     &::before {
       font-size: 3.2rem;
       content: '😊';
+    }
+  }
+  &:active {
+    font-size: 0;
+    background-color: $color-primary-dark-2;
+    transform: translateY(2px);
+    &::before {
+      font-size: 0;
+    }
+    &::after {
+      font-size: 3.2rem;
+      content: '😉';
     }
   }
 }
