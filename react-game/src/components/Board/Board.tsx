@@ -52,6 +52,7 @@ const Board: React.FC = () => {
     setListOfBugs(arrOfBugs);
     setBoardProps(field);
     setButton('🙂');
+    setFlagCounter(bugs);
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
