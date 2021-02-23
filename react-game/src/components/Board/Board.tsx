@@ -5,23 +5,23 @@ import './Board.scss';
 
 const properties = JSON.parse(localStorage.getItem('bugsweeper-props') || '');
 
-const r = 9;
-const c = 9;
-const b = 10;
+const r = properties.rows || 9;
+const c = properties.columns || 9;
+const b = properties.bugs || 10;
 
 const [field, arrOfBugs] =
-  properties.field && properties.listOfBugs
-    ? [properties.field, properties.listOfBugs]
+  properties.board && properties.listOfBugs
+    ? [properties.board, properties.listOfBugs]
     : plantBugs(r, c, b);
 
 const Board: React.FC = () => {
-  const [rows, setRows] = useState(properties.rows || r);
-  const [columns, setColumns] = useState(properties.columns || c);
-  const [bugs, setBugs] = useState(properties.bugs || b);
-  const [board, setBoardProps] = useState(properties.board || field);
+  const [rows, setRows] = useState(r);
+  const [columns, setColumns] = useState(c);
+  const [bugs, setBugs] = useState(b);
+  const [board, setBoardProps] = useState(field);
   const [flagCounter, setFlagCounter] = useState(properties.flagCounter || b);
-  const [listOfBugs, setListOfBugs] = useState(localStorage.getItem('flags') || arrOfBugs);
-  const [button, setButton] = useState(properties.button || '🙂');
+  const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
+  const [button, setButton] = useState(localStorage.getItem('bugsweeper-btn') || '🙂');
 
   const onLose = () => {
     // open all bugs
@@ -35,8 +35,9 @@ const Board: React.FC = () => {
 
     localStorage.setItem(
       'bugsweeper-props',
-      JSON.stringify({ board, listOfBugs, rows, columns, bugs, button, flagCounter }),
+      JSON.stringify({ board, listOfBugs, rows, columns, bugs, flagCounter }),
     );
+    localStorage.setItem('bugsweeper-btn', button);
   };
 
   const handleClick = (x: number, y: number, e: any) => {
