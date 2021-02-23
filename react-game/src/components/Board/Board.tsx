@@ -3,46 +3,62 @@ import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import './Board.scss';
 
+const properties = JSON.parse(localStorage.getItem('bugsweeper-props') || '');
+
 const r = 9;
 const c = 9;
 const b = 10;
 
-const [field, arrOfBugs] = plantBugs(r, c, b);
+const [field, arrOfBugs] =
+  properties.field && properties.listOfBugs
+    ? [properties.field, properties.listOfBugs]
+    : plantBugs(r, c, b);
 
 const Board: React.FC = () => {
-  const [rows, setRows] = useState(r);
-  const [columns, setColumns] = useState(c);
-  const [bugs, setBugs] = useState(b);
-  const [board, setBoardProps] = useState(field);
-  const [flagCounter, setFlagCounter] = useState(b);
-  const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
-  const [button, setButton] = useState('🙂');
+  const [rows, setRows] = useState(properties.rows || r);
+  const [columns, setColumns] = useState(properties.columns || c);
+  const [bugs, setBugs] = useState(properties.bugs || b);
+  const [board, setBoardProps] = useState(properties.board || field);
+  const [flagCounter, setFlagCounter] = useState(properties.flagCounter || b);
+  const [listOfBugs, setListOfBugs] = useState(localStorage.getItem('flags') || arrOfBugs);
+  const [button, setButton] = useState(properties.button || '🙂');
 
   const onLose = () => {
     // open all bugs
-    listOfBugs.forEach((e) => {
+    listOfBugs.forEach((e: number[]) => {
       const [x, y] = e;
       board[x][y].open = true;
     });
   };
+  const saveToLocalStorage = () => {
+    console.log('saveLS', flagCounter);
+
+    localStorage.setItem(
+      'bugsweeper-props',
+      JSON.stringify({ board, listOfBugs, rows, columns, bugs, button, flagCounter }),
+    );
+  };
 
   const handleClick = (x: number, y: number, e: any) => {
-    e.preventDefault();
-    let button = '🙂';
-    if (!board[x][y].flag) {
-      if (board[x][y].value === 'B') {
-        onLose();
-        button = '💀';
+    setTimeout(() => {
+      e.preventDefault();
+      let button = '🙂';
+      if (!board[x][y].flag) {
+        if (board[x][y].value === 'B') {
+          onLose();
+          button = '💀';
+        }
+        const arr = [...board];
+        arr[x][y].open = true;
+        openEmptyTiles(x, y, arr);
+        setBoardProps(arr);
+        setButton('😯');
+        setTimeout(() => {
+          setButton(button);
+        }, 200);
       }
-      const arr = [...board];
-      arr[x][y].open = true;
-      openEmptyTiles(x, y, arr);
-      setBoardProps(arr);
-      setButton('😯');
-      setTimeout(() => {
-        setButton(button);
-      }, 200);
-    }
+      console.log('handleClick');
+    }, 0);
   };
 
   const handleNewGame = () => {
@@ -58,6 +74,7 @@ const Board: React.FC = () => {
     if (!board[x][y].open && (flagCounter > 0 || board[x][y].flag)) {
       const arr = [...board];
       setFlagCounter(arr[x][y].flag ? flagCounter + 1 : flagCounter - 1);
+
       arr[x][y].flag = !arr[x][y].flag;
       setBoardProps(arr);
     }
@@ -65,7 +82,7 @@ const Board: React.FC = () => {
 
   const checkWin = () => {
     if (
-      listOfBugs.every((e) => {
+      listOfBugs.every((e: number[]) => {
         const [x, y] = e;
         return field[x][y].flag;
       })
@@ -75,6 +92,7 @@ const Board: React.FC = () => {
   };
 
   useEffect(() => {
+    saveToLocalStorage();
     if (flagCounter === 0) {
       checkWin();
     }
@@ -92,10 +110,10 @@ const Board: React.FC = () => {
         <Flag flag={true} />
         <span className="counter">{flagCounter}</span>
       </div>
-      {board.map((row, x) => {
+      {board.map((row: [], x: number) => {
         return (
           <div key={x} className="Board-row">
-            {row.map((cell, y) => {
+            {row.map((cell, y: number) => {
               return (
                 <Cell
                   key={`${x}-${y}`}
