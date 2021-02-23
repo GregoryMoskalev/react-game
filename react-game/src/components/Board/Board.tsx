@@ -19,9 +19,6 @@ const [field, arrOfBugs] =
 
 const Board: React.FC = () => {
   const [difficulty, setDifficulty] = useDifficultyState(0);
-  const [rows, setRows] = useState(r);
-  const [columns, setColumns] = useState(c);
-  const [bugs, setBugs] = useState(b);
   const [board, setBoardProps] = useState(field);
   const [flagCounter, setFlagCounter] = useState(properties.flagCounter || b);
   const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
@@ -37,10 +34,7 @@ const Board: React.FC = () => {
   };
 
   const saveToLocalStorage = () => {
-    localStorage.setItem(
-      'bugsweeper-props',
-      JSON.stringify({ board, listOfBugs, rows, columns, bugs, flagCounter }),
-    );
+    localStorage.setItem('bugsweeper-props', JSON.stringify({ board, listOfBugs, flagCounter }));
   };
 
   const handleClick = (x: number, y: number, e: any) => {
@@ -101,6 +95,7 @@ const Board: React.FC = () => {
       if (onMountRender.current) {
         onMountRender.current = false;
       } else {
+        console.count('USEEFFECT');
         handleNewGame();
       }
     },
@@ -108,7 +103,7 @@ const Board: React.FC = () => {
   );
   useEffect(
     () => {
-      console.log('USEEFFECT');
+      console.count('USEEFFECT');
 
       saveToLocalStorage();
       if (flagCounter === 0) {
