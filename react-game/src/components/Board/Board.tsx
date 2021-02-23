@@ -31,8 +31,6 @@ const Board: React.FC = () => {
     });
   };
   const saveToLocalStorage = () => {
-    console.log('saveLS', flagCounter);
-
     localStorage.setItem(
       'bugsweeper-props',
       JSON.stringify({ board, listOfBugs, rows, columns, bugs, flagCounter }),
@@ -41,25 +39,22 @@ const Board: React.FC = () => {
   };
 
   const handleClick = (x: number, y: number, e: any) => {
-    setTimeout(() => {
-      e.preventDefault();
-      let button = '🙂';
-      if (!board[x][y].flag) {
-        if (board[x][y].value === 'B') {
-          onLose();
-          button = '💀';
-        }
-        const arr = [...board];
-        arr[x][y].open = true;
-        openEmptyTiles(x, y, arr);
-        setBoardProps(arr);
-        setButton('😯');
-        setTimeout(() => {
-          setButton(button);
-        }, 200);
+    e.preventDefault();
+    let button = '🙂';
+    if (!board[x][y].flag) {
+      if (board[x][y].value === 'B') {
+        onLose();
+        button = '💀';
       }
-      console.log('handleClick');
-    }, 0);
+      const arr = [...board];
+      arr[x][y].open = true;
+      openEmptyTiles(x, y, arr);
+      setBoardProps(arr);
+      setButton('😯');
+      setTimeout(() => {
+        setButton(button);
+      }, 200);
+    }
   };
 
   const handleNewGame = () => {
