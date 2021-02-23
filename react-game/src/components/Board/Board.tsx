@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
+import useStateAndLS from '../../hooks/useStateAndLS';
 import './Board.scss';
 
 const properties = JSON.parse(localStorage.getItem('bugsweeper-props') || '');
@@ -21,7 +22,7 @@ const Board: React.FC = () => {
   const [board, setBoardProps] = useState(field);
   const [flagCounter, setFlagCounter] = useState(properties.flagCounter || b);
   const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
-  const [button, setButton] = useState(localStorage.getItem('bugsweeper-btn') || '🙂');
+  const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
 
   const onLose = () => {
     // open all bugs
@@ -35,7 +36,6 @@ const Board: React.FC = () => {
       'bugsweeper-props',
       JSON.stringify({ board, listOfBugs, rows, columns, bugs, flagCounter }),
     );
-    localStorage.setItem('bugsweeper-btn', button);
   };
 
   const handleClick = (x: number, y: number, e: any) => {
@@ -87,12 +87,17 @@ const Board: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    saveToLocalStorage();
-    if (flagCounter === 0) {
-      checkWin();
-    }
-  });
+  useEffect(
+    () => {
+      console.log('USEEFFECT');
+
+      saveToLocalStorage();
+      if (flagCounter === 0) {
+        checkWin();
+      }
+    },
+    [flagCounter, board],
+  );
 
   return (
     <div className="Board">
