@@ -97,11 +97,12 @@ const Board: React.FC<any> = (props) => {
     e.preventDefault();
     if (!state.field[x][y].open && (state.flagCounter > 0 || state.field[x][y].flag)) {
       const arr = [...state.field];
-
+      const counter = arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1;
       arr[x][y].flag = !arr[x][y].flag;
+      console.log(counter, state.flagCounter);
       setState((prevState) => ({
         ...prevState,
-        flagCounter: arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1,
+        flagCounter: counter,
         field: [...arr],
       }));
     }
