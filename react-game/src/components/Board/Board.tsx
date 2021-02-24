@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Cell, { Flag } from '../Cell/Cell';
-import BoardSettings from '../Settings/BoardSettings';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
-import useDifficultyState from '../../hooks/useDifficultyState';
 import './Board.scss';
 
 const properties = JSON.parse(localStorage.getItem('bugsweeper-props') || '');
@@ -17,8 +15,7 @@ const [field, arrOfBugs] =
     ? [properties.board, properties.listOfBugs]
     : plantBugs(r, c, b);
 
-const Board: React.FC = () => {
-  const [difficulty, setDifficulty] = useDifficultyState(0);
+const Board: React.FC<any> = (props) => {
   const [board, setBoardProps] = useState(field);
   const [flagCounter, setFlagCounter] = useState(properties.flagCounter || b);
   const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
@@ -56,16 +53,16 @@ const Board: React.FC = () => {
     }
   };
 
-  const handleDifficultyChange = (n: number) => {
-    setDifficulty(n);
-  };
-
   const handleNewGame = () => {
-    const [field, arrOfBugs] = plantBugs(difficulty.rows, difficulty.columns, difficulty.bugs);
+    const [field, arrOfBugs] = plantBugs(
+      props.difficulty.rows,
+      props.difficulty.columns,
+      props.difficulty.bugs,
+    );
     setListOfBugs(arrOfBugs);
     setBoardProps(field);
     setButton('🙂');
-    setFlagCounter(difficulty.bugs);
+    setFlagCounter(props.difficulty.bugs);
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
@@ -92,17 +89,6 @@ const Board: React.FC = () => {
 
   useEffect(
     () => {
-      if (onMountRender.current) {
-        onMountRender.current = false;
-      } else {
-        console.count('USEEFFECT');
-        handleNewGame();
-      }
-    },
-    [difficulty],
-  );
-  useEffect(
-    () => {
       console.count('USEEFFECT');
 
       saveToLocalStorage();
@@ -125,10 +111,6 @@ const Board: React.FC = () => {
         <Flag flag={true} />
         <span className="counter">{flagCounter}</span>
       </div>
-      <button onClick={() => handleDifficultyChange(0)}>change 0</button>
-      <button onClick={() => handleDifficultyChange(1)}>change 1</button>
-      <button onClick={() => handleDifficultyChange(2)}>change 2</button>
-      {/* <BoardSettings handleClick={handleDifficultyChange} /> */}
       <div>
         {board.map((row: [], x: number) => {
           return (

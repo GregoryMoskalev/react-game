@@ -9,8 +9,8 @@ const changeDifficulty = (difficulty: number) => {
 
   switch (difficulty) {
     case 2:
-      value.rows = 16;
-      value.columns = 30;
+      value.rows = 30;
+      value.columns = 16;
       value.bugs = 99;
       break;
     case 1:
