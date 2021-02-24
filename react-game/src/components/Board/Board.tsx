@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
@@ -127,6 +128,7 @@ const Board: React.FC<any> = (props) => {
       <button className="NewGame" onClick={handleNewGame}>
         {button}
       </button>
+      <Link to="/settings">Settings</Link>
       <div className="flag-counter">
         <Flag flag={true} />
         <span className="counter">{state.flagCounter}</span>
