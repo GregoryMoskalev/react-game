@@ -4,7 +4,10 @@ import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
 import './Board.scss';
 
-const properties = JSON.parse(localStorage.getItem('bugsweeper-props') || '');
+const properties =
+  'bugsweeper-props' in localStorage
+    ? JSON.parse(localStorage.getItem('bugsweeper-props') || '')
+    : '';
 
 const r = properties.rows || 9;
 const c = properties.columns || 9;
@@ -16,36 +19,58 @@ const [field, arrOfBugs] =
     : plantBugs(r, c, b);
 
 const Board: React.FC<any> = (props) => {
-  const [board, setBoardProps] = useState(field);
-  const [flagCounter, setFlagCounter] = useState(properties.flagCounter || b);
-  const [listOfBugs, setListOfBugs] = useState(arrOfBugs);
+  const [state, setState] = useState({
+    field,
+    flagCounter: properties.flagCounter || b,
+    listOfBugs: arrOfBugs,
+  });
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
-  const onMountRender = useRef(true);
 
+  useEffect(
+    () => {
+      console.count('USEEFFECT');
+
+      saveToLocalStorage();
+      if (state.flagCounter === 0) {
+        checkWin();
+      }
+    },
+    [state.flagCounter, state.field],
+  );
   const onLose = () => {
     // open all bugs
-    listOfBugs.forEach((e: number[]) => {
+    state.listOfBugs.forEach((e: number[]) => {
       const [x, y] = e;
-      board[x][y].open = true;
+      state.field[x][y].open = true;
     });
   };
 
   const saveToLocalStorage = () => {
-    localStorage.setItem('bugsweeper-props', JSON.stringify({ board, listOfBugs, flagCounter }));
+    localStorage.setItem(
+      'bugsweeper-props',
+      JSON.stringify({
+        board: state.field,
+        listOfBugs: state.listOfBugs,
+        flagCounter: state.flagCounter,
+      }),
+    );
   };
 
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
     let button = '🙂';
-    if (!board[x][y].flag) {
-      if (board[x][y].value === 'B') {
+    if (!state.field[x][y].flag) {
+      if (state.field[x][y].value === 'B') {
         onLose();
         button = '💀';
       }
-      const arr = [...board];
+      const arr = [...state.field];
       arr[x][y].open = true;
       openEmptyTiles(x, y, arr);
-      setBoardProps(arr);
+      setState((prevState) => ({
+        ...prevState,
+        field: [...arr],
+      }));
       setButton('😯');
       setTimeout(() => {
         setButton(button);
@@ -59,26 +84,32 @@ const Board: React.FC<any> = (props) => {
       props.difficulty.columns,
       props.difficulty.bugs,
     );
-    setListOfBugs(arrOfBugs);
-    setBoardProps(field);
     setButton('🙂');
-    setFlagCounter(props.difficulty.bugs);
+    setState((prevState) => ({
+      ...prevState,
+      listOfBugs: arrOfBugs,
+      field,
+      flagCounter: props.difficulty.bugs,
+    }));
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
     e.preventDefault();
-    if (!board[x][y].open && (flagCounter > 0 || board[x][y].flag)) {
-      const arr = [...board];
-      setFlagCounter(arr[x][y].flag ? flagCounter + 1 : flagCounter - 1);
+    if (!state.field[x][y].open && (state.flagCounter > 0 || state.field[x][y].flag)) {
+      const arr = [...state.field];
 
       arr[x][y].flag = !arr[x][y].flag;
-      setBoardProps(arr);
+      setState((prevState) => ({
+        ...prevState,
+        flagCounter: arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1,
+        field: [...arr],
+      }));
     }
   };
 
   const checkWin = () => {
     if (
-      listOfBugs.every((e: number[]) => {
+      state.listOfBugs.every((e: number[]) => {
         const [x, y] = e;
         return field[x][y].flag;
       })
@@ -86,18 +117,6 @@ const Board: React.FC<any> = (props) => {
       setButton('🥳');
     }
   };
-
-  useEffect(
-    () => {
-      console.count('USEEFFECT');
-
-      saveToLocalStorage();
-      if (flagCounter === 0) {
-        checkWin();
-      }
-    },
-    [flagCounter, board],
-  );
 
   return (
     <div className="Board">
@@ -109,10 +128,10 @@ const Board: React.FC<any> = (props) => {
       </button>
       <div className="flag-counter">
         <Flag flag={true} />
-        <span className="counter">{flagCounter}</span>
+        <span className="counter">{state.flagCounter}</span>
       </div>
       <div>
-        {board.map((row: [], x: number) => {
+        {state.field.map((row: [], x: number) => {
           return (
             <div key={x} className="Board-row">
               {row.map((cell, y: number) => {
