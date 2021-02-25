@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import GameSettings from '../GameSettings/GameSettings';
 import Board from '../Board/Board';
 import Footer from '../Footer/Footer';
+import useStateAndLS from '../../hooks/useStateAndLS';
 import './App.scss';
 
 const changeDifficulty = (difficulty: number) => {
@@ -33,8 +34,7 @@ const changeDifficulty = (difficulty: number) => {
 };
 
 const App: React.FC = () => {
-  const [difficulty, setDifficulty] = useState(changeDifficulty(0));
-
+  const [difficulty, setDifficulty] = useStateAndLS(changeDifficulty(0), 'bugsweeper-difficulty');
   const handleDifficultyChange = (n: number) => {
     localStorage.removeItem('bugsweeper-save');
     setDifficulty(changeDifficulty(n));
