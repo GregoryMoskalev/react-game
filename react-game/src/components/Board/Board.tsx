@@ -119,7 +119,9 @@ const Board: React.FC<any> = (props) => {
   return (
     <div className="Board">
       <h1 className="heading h-1">
-        <div className="material-icons">pest_control</div>Bugsweeper
+        <div className="material-icons glitch" data-text="pest_control">
+          pest_control
+        </div>Bugsweeper
       </h1>
       <button className="NewGame" onClick={handleNewGame}>
         {button}

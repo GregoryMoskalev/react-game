@@ -10,7 +10,7 @@ interface CellProps {
 
 const Bug: React.FC<{ open: boolean | string | number }> = (props) => {
   return (
-    <div className={props.open ? 'material-icons glitch' : ''} data-text="pest_control">
+    <div className={props.open ? 'material-icons' : ''} data-text="pest_control">
       pest_control
     </div>
   );
