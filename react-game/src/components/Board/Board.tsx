@@ -22,7 +22,7 @@ const [field, arrOfBugs] =
 const Board: React.FC<any> = (props) => {
   const [state, setState] = useState({
     field,
-    flagCounter: properties.flagCounter || b,
+    flagCounter: properties.flagCounter || props.bugs,
     listOfBugs: arrOfBugs,
   });
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
@@ -80,17 +80,13 @@ const Board: React.FC<any> = (props) => {
   };
 
   const handleNewGame = () => {
-    const [field, arrOfBugs] = plantBugs(
-      props.difficulty.rows,
-      props.difficulty.columns,
-      props.difficulty.bugs,
-    );
+    const [field, arrOfBugs] = plantBugs(props.rows, props.columns, props.bugs);
     setButton('🙂');
     setState((prevState) => ({
       ...prevState,
       listOfBugs: arrOfBugs,
       field,
-      flagCounter: props.difficulty.bugs,
+      flagCounter: props.bugs,
     }));
   };
 
