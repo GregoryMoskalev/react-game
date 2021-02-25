@@ -12,8 +12,8 @@
   transition: translate .3s ease, background-color .3s ease;
   overflow: hidden;
 
-  &.Bug,
-  &.Flag {
+  & .Bug,
+  & .Flag {
     width: 3rem;
     height: 3rem;
   }

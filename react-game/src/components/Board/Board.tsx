@@ -4,6 +4,9 @@ import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
 import './Board.scss';
+import popCatSound from '../../assets/pop_cat.mp3';
+import pigPissdSound from '../../assets/Pigpissd.mp3';
+import winS from '../../assets/b146dc8d75d05f3.mp3';
 
 // const properties =
 //   'bugsweeper-props' in localStorage
@@ -20,6 +23,9 @@ import './Board.scss';
 //     : plantBugs(r, c, b);
 
 const Board: React.FC<any> = (props) => {
+  const clickSound = new Audio(popCatSound);
+  const loseSound = new Audio(pigPissdSound);
+  const winSound = new Audio(winS);
   const [state, setState] = useStateAndLS(
     {
       ...plantBugs(props.rows, props.columns, props.bugs),
@@ -52,8 +58,11 @@ const Board: React.FC<any> = (props) => {
     let button = '🙂';
     if (!state.field[x][y].flag) {
       if (state.field[x][y].value === 'B') {
+        loseSound.play();
         onLose();
         button = '💀';
+      } else {
+        clickSound.play();
       }
       const arr = [...state.field];
       arr[x][y].open = true;
@@ -100,6 +109,7 @@ const Board: React.FC<any> = (props) => {
         return state.field[x][y].flag;
       })
     ) {
+      winSound.play();
       setButton('🥳');
     }
   };
