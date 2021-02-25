@@ -5,26 +5,25 @@ import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
 import './Board.scss';
 
-const properties =
-  'bugsweeper-props' in localStorage
-    ? JSON.parse(localStorage.getItem('bugsweeper-props') || '')
-    : '';
+// const properties =
+//   'bugsweeper-props' in localStorage
+//     ? JSON.parse(localStorage.getItem('bugsweeper-props') || '')
+//     : '';
 
-const r = properties.rows || 9;
-const c = properties.columns || 9;
-const b = properties.bugs || 10;
+// const r = properties.rows || 9;
+// const c = properties.columns || 9;
+// const b = properties.bugs || 10;
 
-const [field, arrOfBugs] =
-  properties.board && properties.listOfBugs
-    ? [properties.board, properties.listOfBugs]
-    : plantBugs(r, c, b);
+// const [field, arrOfBugs] =
+//   properties.board && properties.listOfBugs
+//     ? [properties.board, properties.listOfBugs]
+//     : plantBugs(r, c, b);
 
 const Board: React.FC<any> = (props) => {
   const [state, setState] = useStateAndLS(
     {
-      field,
-      flagCounter: properties.flagCounter || props.bugs,
-      listOfBugs: arrOfBugs,
+      ...plantBugs(props.rows, props.columns, props.bugs),
+      flagCounter: props.bugs,
     },
     'bugsweeper-save',
   );
@@ -72,11 +71,9 @@ const Board: React.FC<any> = (props) => {
   };
 
   const handleNewGame = () => {
-    const [field, arrOfBugs] = plantBugs(props.rows, props.columns, props.bugs);
     setButton('🙂');
     setState({
-      listOfBugs: arrOfBugs,
-      field,
+      ...plantBugs(props.rows, props.columns, props.bugs),
       flagCounter: props.bugs,
     });
   };
@@ -100,7 +97,7 @@ const Board: React.FC<any> = (props) => {
     if (
       state.listOfBugs.every((e: number[]) => {
         const [x, y] = e;
-        return field[x][y].flag;
+        return state.field[x][y].flag;
       })
     ) {
       setButton('🥳');

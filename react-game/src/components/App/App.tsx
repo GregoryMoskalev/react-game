@@ -36,7 +36,7 @@ const App: React.FC = () => {
   const [difficulty, setDifficulty] = useState(changeDifficulty(0));
 
   const handleDifficultyChange = (n: number) => {
-    localStorage.removeItem('bugsweeper-props');
+    localStorage.removeItem('bugsweeper-save');
     setDifficulty(changeDifficulty(n));
   };
 

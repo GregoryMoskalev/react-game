@@ -73,20 +73,20 @@ export const plantBugs = (
   rows: number,
   columns: number,
   bugs: number,
-): [FieldOfBugs, number[][]] => {
-  const arr: FieldOfBugs = addProperties(createMatrix(rows, columns, 0));
+): { field: FieldOfBugs; listOfBugs: number[][] } => {
+  const field: FieldOfBugs = addProperties(createMatrix(rows, columns, 0));
   const listOfBugs = createRandomListOfCoordinats(bugs, rows, columns);
   listOfBugs.forEach((c: number[]) => {
     const [x, y] = c;
-    arr[x][y].value = 'B';
-    bugCounter(x + 1, y, arr);
-    bugCounter(x + 1, y + 1, arr);
-    bugCounter(x + 1, y - 1, arr);
-    bugCounter(x - 1, y, arr);
-    bugCounter(x - 1, y - 1, arr);
-    bugCounter(x - 1, y + 1, arr);
-    bugCounter(x, y + 1, arr);
-    bugCounter(x, y - 1, arr);
+    field[x][y].value = 'B';
+    bugCounter(x + 1, y, field);
+    bugCounter(x + 1, y + 1, field);
+    bugCounter(x + 1, y - 1, field);
+    bugCounter(x - 1, y, field);
+    bugCounter(x - 1, y - 1, field);
+    bugCounter(x - 1, y + 1, field);
+    bugCounter(x, y + 1, field);
+    bugCounter(x, y - 1, field);
   });
-  return [arr, listOfBugs];
+  return { field, listOfBugs };
 };
