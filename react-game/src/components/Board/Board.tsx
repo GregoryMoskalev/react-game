@@ -20,18 +20,20 @@ const [field, arrOfBugs] =
     : plantBugs(r, c, b);
 
 const Board: React.FC<any> = (props) => {
-  const [state, setState] = useState({
-    field,
-    flagCounter: properties.flagCounter || props.bugs,
-    listOfBugs: arrOfBugs,
-  });
+  const [state, setState] = useStateAndLS(
+    {
+      field,
+      flagCounter: properties.flagCounter || props.bugs,
+      listOfBugs: arrOfBugs,
+    },
+    'bugsweeper-save',
+  );
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
 
   useEffect(
     () => {
       console.count('USEEFFECT');
 
-      saveToLocalStorage();
       if (state.flagCounter === 0) {
         checkWin();
       }
@@ -44,17 +46,6 @@ const Board: React.FC<any> = (props) => {
       const [x, y] = e;
       state.field[x][y].open = true;
     });
-  };
-
-  const saveToLocalStorage = () => {
-    localStorage.setItem(
-      'bugsweeper-props',
-      JSON.stringify({
-        board: state.field,
-        listOfBugs: state.listOfBugs,
-        flagCounter: state.flagCounter,
-      }),
-    );
   };
 
   const handleClick = (x: number, y: number, e: any) => {
