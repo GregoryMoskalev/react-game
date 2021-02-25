@@ -7,12 +7,16 @@ import './Board.scss';
 import popCatSound from '../../assets/pop_cat.mp3';
 import pigPissdSound from '../../assets/Pigpissd.mp3';
 import winS from '../../assets/b146dc8d75d05f3.mp3';
+import rCSound from '../../assets/ffc89ff250028f8.mp3';
 import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
 
 const clickSound = new Audio(popCatSound);
+const rClickSound = new Audio(rCSound);
 const loseSound = new Audio(pigPissdSound);
 const winSound = new Audio(winS);
-const song1 = new Audio(music1);
+
+loseSound.volume = 0.1;
+rClickSound.volume = 0.3;
 
 const Board: React.FC<any> = (props) => {
   const [state, setState] = useStateAndLS(
@@ -25,6 +29,8 @@ const Board: React.FC<any> = (props) => {
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
 
   useEffect(() => {
+    const song1 = new Audio(music1);
+    song1.volume = 0.2;
     song1.addEventListener(
       'ended',
       function() {
@@ -34,6 +40,9 @@ const Board: React.FC<any> = (props) => {
       false,
     );
     song1.play();
+    return function cleanup() {
+      song1.pause();
+    };
   }, []);
 
   useEffect(
@@ -90,6 +99,8 @@ const Board: React.FC<any> = (props) => {
 
   const handleContextMenu = (x: number, y: number, e: any) => {
     e.preventDefault();
+    rClickSound.currentTime = 0;
+    rClickSound.play();
     if (!state.field[x][y].open && (state.flagCounter > 0 || state.field[x][y].flag)) {
       const arr = [...state.field];
       const counter = arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1;
