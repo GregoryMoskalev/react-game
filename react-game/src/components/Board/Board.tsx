@@ -68,10 +68,11 @@ const Board: React.FC<any> = (props) => {
       const arr = [...state.field];
       arr[x][y].open = true;
       openEmptyTiles(x, y, arr);
-      setState((prevState) => ({
-        ...prevState,
+      setState({
+        listOfBugs: state.listOfBugs,
+        flagCounter: state.flagCounter,
         field: [...arr],
-      }));
+      });
       setButton('😯');
       setTimeout(() => {
         setButton(button);
@@ -82,12 +83,11 @@ const Board: React.FC<any> = (props) => {
   const handleNewGame = () => {
     const [field, arrOfBugs] = plantBugs(props.rows, props.columns, props.bugs);
     setButton('🙂');
-    setState((prevState) => ({
-      ...prevState,
+    setState({
       listOfBugs: arrOfBugs,
       field,
       flagCounter: props.bugs,
-    }));
+    });
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
@@ -97,11 +97,11 @@ const Board: React.FC<any> = (props) => {
       const counter = arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1;
       arr[x][y].flag = !arr[x][y].flag;
       console.log(counter, state.flagCounter);
-      setState((prevState) => ({
-        ...prevState,
+      setState({
+        listOfBugs: state.listOfBugs,
         flagCounter: counter,
         field: [...arr],
-      }));
+      });
     }
   };
 
