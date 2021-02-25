@@ -7,25 +7,14 @@ import './Board.scss';
 import popCatSound from '../../assets/pop_cat.mp3';
 import pigPissdSound from '../../assets/Pigpissd.mp3';
 import winS from '../../assets/b146dc8d75d05f3.mp3';
+import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
 
-// const properties =
-//   'bugsweeper-props' in localStorage
-//     ? JSON.parse(localStorage.getItem('bugsweeper-props') || '')
-//     : '';
-
-// const r = properties.rows || 9;
-// const c = properties.columns || 9;
-// const b = properties.bugs || 10;
-
-// const [field, arrOfBugs] =
-//   properties.board && properties.listOfBugs
-//     ? [properties.board, properties.listOfBugs]
-//     : plantBugs(r, c, b);
+const clickSound = new Audio(popCatSound);
+const loseSound = new Audio(pigPissdSound);
+const winSound = new Audio(winS);
+const song1 = new Audio(music1);
 
 const Board: React.FC<any> = (props) => {
-  const clickSound = new Audio(popCatSound);
-  const loseSound = new Audio(pigPissdSound);
-  const winSound = new Audio(winS);
   const [state, setState] = useStateAndLS(
     {
       ...plantBugs(props.rows, props.columns, props.bugs),
@@ -34,6 +23,18 @@ const Board: React.FC<any> = (props) => {
     'bugsweeper-save',
   );
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
+
+  useEffect(() => {
+    song1.addEventListener(
+      'ended',
+      function() {
+        this.currentTime = 0;
+        this.play();
+      },
+      false,
+    );
+    song1.play();
+  }, []);
 
   useEffect(
     () => {
