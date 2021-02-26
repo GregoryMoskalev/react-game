@@ -130,14 +130,22 @@ const Board: React.FC<any> = (props) => {
   return (
     <div className="Board">
       <h1 className="heading h-1">Bugsweeper</h1>
-      <button className="NewGame" onClick={handleNewGame}>
-        {button}
-      </button>
-      <Link to="/settings">Settings</Link>
-      <div className="flag-counter">
-        <Flag flag={true} />
-        <span className="counter">{state.flagCounter}</span>
+      <div className="Board-controls">
+        <div className="Board-stats">
+          <div className="Board-timer">04:00</div>
+          <button className="NewGame" onClick={handleNewGame}>
+            {button}
+          </button>
+          <div className="flag-counter">
+            <Flag flag={true} />
+            <span className="counter">{state.flagCounter}</span>
+          </div>
+        </div>
+        <Link className="material-icons settings-btn" to="/settings">
+          settings
+        </Link>
       </div>
+
       <div>
         {state.field.map((row: [], x: number) => {
           return (
