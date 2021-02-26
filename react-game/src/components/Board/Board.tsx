@@ -5,7 +5,7 @@ import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
 import './Board.scss';
 import popCatSound from '../../assets/pop_cat.mp3';
-import pigPissdSound from '../../assets/Pigpissd.mp3';
+import onLoseSound from '../../assets/Wilhelm_Scream.mp3';
 import winS from '../../assets/b146dc8d75d05f3.mp3';
 import rCSound from '../../assets/ffc89ff250028f8.mp3';
 import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
@@ -13,7 +13,7 @@ import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3
 const Board: React.FC<any> = (props) => {
   const clickSound = new Audio(popCatSound);
   const rClickSound = new Audio(rCSound);
-  const loseSound = new Audio(pigPissdSound);
+  const loseSound = new Audio(onLoseSound);
   const winSound = new Audio(winS);
   const song1 = new Audio(music1);
   const [state, setState] = useStateAndLS(
