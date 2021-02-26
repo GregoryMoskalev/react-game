@@ -53,7 +53,9 @@ const App: React.FC = () => {
         <Route
           exact
           path="/settings"
-          render={(props: any) => <GameSettings handleChange={(n) => handleDifficultyChange(n)} />}
+          render={(props: any) => (
+            <GameSettings bugs={difficulty.bugs} handleChange={(n) => handleDifficultyChange(n)} />
+          )}
         />
       </Switch>
       <Footer />
