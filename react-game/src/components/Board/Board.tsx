@@ -17,6 +17,7 @@ const winSound = new Audio(winS);
 
 loseSound.volume = 0.1;
 rClickSound.volume = 0.3;
+clickSound.volume = 1;
 
 const Board: React.FC<any> = (props) => {
   const [state, setState] = useStateAndLS(
@@ -30,7 +31,7 @@ const Board: React.FC<any> = (props) => {
 
   useEffect(() => {
     const song1 = new Audio(music1);
-    song1.volume = 0.2;
+    song1.volume = 0.1;
     song1.addEventListener(
       'ended',
       function() {

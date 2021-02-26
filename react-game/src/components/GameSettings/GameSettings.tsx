@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
+import './GameSettings.scss';
 
 interface GameSettingsProps {
   handleChange: (arg0: number) => void;
@@ -8,11 +9,52 @@ interface GameSettingsProps {
 const GameSettings: React.FC<GameSettingsProps> = (props) => {
   return (
     <React.Fragment>
-      <div>wow such settings</div>
-      <button onClick={() => props.handleChange(0)}>change 0</button>
-      <button onClick={() => props.handleChange(1)}>change 1</button>
-      <button onClick={() => props.handleChange(2)}>change 2</button>
-      <Link to="/">Play</Link>
+      <div
+        className="radio-group difficulty"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          props.handleChange(Number(e.target.value))}
+      >
+        <h4 className="settings-heading">Difficulty</h4>
+        <div className="radio-button">
+          <input
+            className="radio-input"
+            type="radio"
+            id="difficultyEasy"
+            name="difficulty"
+            value="0"
+          />
+          <label className="radio-label easy" htmlFor="difficultyEasy">
+            Easy
+          </label>
+        </div>
+        <div className="radio-button">
+          <input
+            className="radio-input"
+            type="radio"
+            id="difficultyMedium"
+            name="difficulty"
+            value="1"
+          />
+          <label className="radio-label medium" htmlFor="difficultyMedium">
+            Medium
+          </label>
+        </div>
+        <div className="radio-button">
+          <input
+            className="radio-input"
+            type="radio"
+            id="difficultyExpert"
+            name="difficulty"
+            value="2"
+          />
+          <label className="radio-label expert" htmlFor="difficultyExpert">
+            Expert
+          </label>
+        </div>
+      </div>
+      <Link className="play-btn" to="/">
+        Play
+      </Link>
     </React.Fragment>
   );
 };
