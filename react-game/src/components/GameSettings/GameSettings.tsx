@@ -18,7 +18,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         <h4 className="settings-heading">Difficulty</h4>
         <div className="radio-button">
           <input
-            checked={props.bugs === 10}
+            defaultChecked={props.bugs === 10}
             className="radio-input"
             type="radio"
             id="difficultyEasy"
@@ -31,7 +31,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
         <div className="radio-button">
           <input
-            checked={props.bugs === 40}
+            defaultChecked={props.bugs === 40}
             className="radio-input"
             type="radio"
             id="difficultyMedium"
@@ -44,7 +44,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
         <div className="radio-button">
           <input
-            checked={props.bugs === 99}
+            defaultChecked={props.bugs === 99}
             className="radio-input"
             type="radio"
             id="difficultyExpert"
