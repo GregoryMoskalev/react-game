@@ -10,10 +10,10 @@ const Footer: React.FC = () => {
         <a href="https://rs.school/react/" target="_blank" rel="noopener noreferrer">
           <img className="rs-logo" src={rsLogo} alt="rs school logo" />
         </a>{' '}
-        online course. Copyright &copy; 2021&nbsp;
+        online course by&nbsp;
         <a href="https://github.com/GregoryMoskalev" target="_blank" rel="noopener noreferrer">
           Gregory Moskalev
-        </a>.
+        </a>. 2021
       </p>
     </footer>
   );
