@@ -10,16 +10,12 @@ import winS from '../../assets/b146dc8d75d05f3.mp3';
 import rCSound from '../../assets/ffc89ff250028f8.mp3';
 import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
 
-const clickSound = new Audio(popCatSound);
-const rClickSound = new Audio(rCSound);
-const loseSound = new Audio(pigPissdSound);
-const winSound = new Audio(winS);
-
-loseSound.volume = 0.1;
-rClickSound.volume = 0.3;
-clickSound.volume = 1;
-
 const Board: React.FC<any> = (props) => {
+  const clickSound = new Audio(popCatSound);
+  const rClickSound = new Audio(rCSound);
+  const loseSound = new Audio(pigPissdSound);
+  const winSound = new Audio(winS);
+  const song1 = new Audio(music1);
   const [state, setState] = useStateAndLS(
     {
       ...plantBugs(props.rows, props.columns, props.bugs),
@@ -30,17 +26,20 @@ const Board: React.FC<any> = (props) => {
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
 
   useEffect(() => {
-    const song1 = new Audio(music1);
-    song1.volume = 0.1;
     song1.addEventListener(
       'ended',
       function() {
         this.currentTime = 0;
-        this.play();
+        if (props.audioVolume.music) {
+          this.play();
+        }
       },
       false,
     );
-    song1.play();
+    if (props.audioVolume.music) {
+      song1.volume = props.audioVolume.music;
+      song1.play();
+    }
     return function cleanup() {
       song1.pause();
     };
@@ -57,6 +56,10 @@ const Board: React.FC<any> = (props) => {
     [state.flagCounter, state.field],
   );
   const onLose = () => {
+    if (props.audioVolume.sound) {
+      loseSound.volume = props.audioVolume.sound > 0.3 ? 0.3 : props.audioVolume.sound;
+      loseSound.play();
+    }
     // open all bugs
     state.listOfBugs.forEach((e: number[]) => {
       const [x, y] = e;
@@ -69,11 +72,14 @@ const Board: React.FC<any> = (props) => {
     let button = '🙂';
     if (!state.field[x][y].flag) {
       if (state.field[x][y].value === 'B') {
-        loseSound.play();
         onLose();
         button = '💀';
-      } else {
-        clickSound.play();
+      } else if (!state.field[x][y].open) {
+        if (props.audioVolume.sound) {
+          clickSound.volume = props.audioVolume.sound;
+          clickSound.play();
+        }
+        setButton('😯');
       }
       const arr = [...state.field];
       arr[x][y].open = true;
@@ -83,7 +89,7 @@ const Board: React.FC<any> = (props) => {
         flagCounter: state.flagCounter,
         field: [...arr],
       });
-      setButton('😯');
+
       setTimeout(() => {
         setButton(button);
       }, 200);
@@ -100,6 +106,7 @@ const Board: React.FC<any> = (props) => {
 
   const handleContextMenu = (x: number, y: number, e: any) => {
     e.preventDefault();
+    rClickSound.volume = props.audioVolume.sound;
     rClickSound.currentTime = 0;
     rClickSound.play();
     if (!state.field[x][y].open && (state.flagCounter > 0 || state.field[x][y].flag)) {

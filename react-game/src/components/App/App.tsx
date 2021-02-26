@@ -34,10 +34,24 @@ const changeDifficulty = (difficulty: number) => {
 };
 
 const App: React.FC = () => {
+  const [audioVolume, setAudioVolumeState] = useStateAndLS(
+    {
+      sound: 0.5,
+      music: 0,
+    },
+    'bugsweeper-audio-volume',
+  );
   const [difficulty, setDifficulty] = useStateAndLS(changeDifficulty(0), 'bugsweeper-difficulty');
   const handleDifficultyChange = (n: number) => {
     localStorage.removeItem('bugsweeper-save');
     setDifficulty(changeDifficulty(n));
+  };
+
+  const handleVolumeChange = (s: number, m: number) => {
+    setAudioVolumeState({
+      sound: s,
+      music: m,
+    });
   };
 
   return (
@@ -47,14 +61,24 @@ const App: React.FC = () => {
           exact
           path="/"
           render={(props: any) => (
-            <Board rows={difficulty.rows} columns={difficulty.columns} bugs={difficulty.bugs} />
+            <Board
+              audioVolume={audioVolume}
+              rows={difficulty.rows}
+              columns={difficulty.columns}
+              bugs={difficulty.bugs}
+            />
           )}
         />
         <Route
           exact
           path="/settings"
           render={(props: any) => (
-            <GameSettings bugs={difficulty.bugs} handleChange={(n) => handleDifficultyChange(n)} />
+            <GameSettings
+              audioVolume={audioVolume}
+              handleVolumeChange={handleVolumeChange}
+              bugs={difficulty.bugs}
+              handleChange={(n) => handleDifficultyChange(n)}
+            />
           )}
         />
       </Switch>
