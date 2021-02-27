@@ -16,6 +16,8 @@ const Board: React.FC<any> = (props) => {
   const loseSound = new Audio(onLoseSound);
   const winSound = new Audio(winS);
   const song1 = new Audio(music1);
+  const [timer, setTimer] = useState('00:00');
+  const [timerId, setTimerId] = useState(0);
   const [state, setState] = useStateAndLS(
     {
       ...plantBugs(props.rows, props.columns, props.bugs),
@@ -47,18 +49,18 @@ const Board: React.FC<any> = (props) => {
 
   useEffect(
     () => {
-      console.count('USEEFFECT');
-
       if (state.flagCounter === 0) {
         checkWin();
       }
     },
     [state.flagCounter, state.field],
   );
+
   const onLose = () => {
     if (props.audioVolume.sound) {
       loseSound.volume = props.audioVolume.sound > 0.3 ? 0.3 : props.audioVolume.sound;
       loseSound.play();
+      clearInterval(timerId);
     }
     // open all bugs
     state.listOfBugs.forEach((e: number[]) => {
@@ -97,6 +99,9 @@ const Board: React.FC<any> = (props) => {
   };
 
   const handleNewGame = () => {
+    clearInterval(timerId);
+    //@ts-ignore
+    setTimerId(time());
     setButton('🙂');
     setState({
       ...plantBugs(props.rows, props.columns, props.bugs),
@@ -113,7 +118,6 @@ const Board: React.FC<any> = (props) => {
       const arr = [...state.field];
       const counter = arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1;
       arr[x][y].flag = !arr[x][y].flag;
-      console.log(counter, state.flagCounter);
       setState({
         listOfBugs: state.listOfBugs,
         flagCounter: counter,
@@ -131,7 +135,21 @@ const Board: React.FC<any> = (props) => {
     ) {
       winSound.play();
       setButton('🥳');
+      clearInterval(timerId);
     }
+  };
+
+  const convertTime = (delta: number) => {
+    const sec = String(Math.floor((delta / 1000) % 60));
+    const min = String(Math.floor((delta / (1000 * 60)) % 60));
+    return `${min.padStart(2, '0')}:${sec.padStart(2, '0')}`;
+  };
+
+  const time = () => {
+    const start = Date.now();
+    return setInterval(() => {
+      setTimer(convertTime(Date.now() - start));
+    }, 100);
   };
 
   return (
@@ -139,7 +157,7 @@ const Board: React.FC<any> = (props) => {
       <h1 className="heading h-1">Bugsweeper</h1>
       <div className="Board-controls">
         <div className="Board-stats">
-          <div className="Board-timer">04:00</div>
+          <div className="Board-timer">{timer}</div>
           <button className="NewGame" onClick={handleNewGame}>
             {button}
           </button>
