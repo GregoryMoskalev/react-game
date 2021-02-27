@@ -152,9 +152,20 @@ const Board: React.FC<any> = (props) => {
     }, 100);
   };
 
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
   return (
     <div className="Board">
       <h1 className="heading h-1">Bugsweeper</h1>
+      <button className="fullscreen-btn material-icons" onClick={toggleFullScreen}>
+        fullscreen
+      </button>
       <div className="Board-controls">
         <div className="Board-stats">
           <div className="Board-timer">{timer}</div>
