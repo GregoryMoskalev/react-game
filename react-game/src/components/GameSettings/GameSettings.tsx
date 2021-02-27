@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './GameSettings.scss';
 
@@ -12,18 +12,19 @@ interface GameSettingsProps {
   handleChange: (arg0: number) => void;
 }
 
+type InputChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
+
 const GameSettings: React.FC<GameSettingsProps> = (props) => {
+  const onDifficultyChange: InputChangeHandler = (e) => props.handleChange(Number(e.target.value));
+
   return (
     <React.Fragment>
-      <div
-        className="radio-group difficulty"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          props.handleChange(Number(e.target.value))}
-      >
+      <div className="radio-group difficulty">
         <h4 className="settings-heading">Difficulty</h4>
         <div className="radio-button">
           <input
-            defaultChecked={props.bugs === 10}
+            checked={props.bugs === 10}
+            onChange={onDifficultyChange}
             className="radio-input"
             type="radio"
             id="difficultyEasy"
@@ -36,7 +37,8 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
         <div className="radio-button">
           <input
-            defaultChecked={props.bugs === 40}
+            checked={props.bugs === 40}
+            onChange={onDifficultyChange}
             className="radio-input"
             type="radio"
             id="difficultyMedium"
@@ -49,7 +51,8 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
         <div className="radio-button">
           <input
-            defaultChecked={props.bugs === 99}
+            checked={props.bugs === 99}
+            onChange={onDifficultyChange}
             className="radio-input"
             type="radio"
             id="difficultyExpert"
@@ -63,13 +66,11 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
       </div>
       <div>
         <h4 className="settings-heading">Audio settings</h4>
-        <div
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            props.handleVolumeChange(Number(e.target.value), props.audioVolume.music)}
-        >
+        <div>
           <label htmlFor="sound">Sound</label>
           <input
-            defaultValue={props.audioVolume.sound}
+            value={props.audioVolume.sound}
+            onChange={(e) => props.handleVolumeChange(Number(e.target.value), props.audioVolume.music)}
             type="range"
             step="0.1"
             id="sound"
@@ -78,13 +79,11 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             max="1"
           />
         </div>
-        <div
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            props.handleVolumeChange(props.audioVolume.sound, Number(e.target.value))}
-        >
+        <div>
           <label htmlFor="music">Music</label>
           <input
-            defaultValue={props.audioVolume.music}
+            value={props.audioVolume.music}
+            onChange={(e) => props.handleVolumeChange(props.audioVolume.sound, Number(e.target.value))}
             type="range"
             step="0.1"
             id="music"
