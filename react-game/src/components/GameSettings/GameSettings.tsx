@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './GameSettings.scss';
+import { connect } from 'react-redux';
 
 interface GameSettingsProps {
   audioVolume: {
@@ -100,4 +101,14 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
   );
 };
 
-export default GameSettings;
+const mapStateToProps = (state: any) => {
+  const {audioVolume, bugs} = state.settings;
+  const props: GameSettingsProps = {
+    audioVolume,
+    bugs,
+    handleChange: () => {},
+    handleVolumeChange: () => {},
+  }
+  return props;
+};
+export default connect(mapStateToProps)(GameSettings);

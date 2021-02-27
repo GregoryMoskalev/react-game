@@ -34,25 +34,14 @@ const changeDifficulty = (difficulty: number) => {
 };
 
 const App: React.FC = () => {
-  const [audioVolume, setAudioVolumeState] = useStateAndLS(
+  const [audioVolume] = useStateAndLS(
     {
       sound: 0.5,
       music: 0,
     },
     'bugsweeper-audio-volume',
   );
-  const [difficulty, setDifficulty] = useStateAndLS(changeDifficulty(0), 'bugsweeper-difficulty');
-  const handleDifficultyChange = (n: number) => {
-    localStorage.removeItem('bugsweeper-save');
-    setDifficulty(changeDifficulty(n));
-  };
-
-  const handleVolumeChange = (s: number, m: number) => {
-    setAudioVolumeState({
-      sound: s,
-      music: m,
-    });
-  };
+  const [difficulty] = useStateAndLS(changeDifficulty(0), 'bugsweeper-difficulty');
 
   return (
     <div className="App">
@@ -72,14 +61,7 @@ const App: React.FC = () => {
         <Route
           exact
           path="/settings"
-          render={(props: any) => (
-            <GameSettings
-              audioVolume={audioVolume}
-              handleVolumeChange={handleVolumeChange}
-              bugs={difficulty.bugs}
-              handleChange={(n) => handleDifficultyChange(n)}
-            />
-          )}
+          component={GameSettings}
         />
       </Switch>
       <Footer />
