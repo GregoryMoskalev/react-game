@@ -44,6 +44,35 @@ const reducer = (state, action) => {
           }
         }
       }
+    case 'OPEN_CELL':
+    case 'FLAG_CELL':
+      const {row, col} = action.payload;
+      const newField = [...state.board.field];
+      newField[row] = [...newField[row]]
+      let cell = {...newField[row][col]};
+      newField[row][col] = cell;
+      if (!cell.open && !cell.flag) {
+        if (action.type === 'OPEN_CELL') {
+          cell.open = true;
+        } else if (action.type === 'FLAG_CELL') {
+          cell.flag = true;
+        }
+      }
+      return {
+        ...state,
+        board: {
+          ...state.board,
+          field: newField,
+        }
+      }
+    case 'NEW_GAME':
+      return {
+        ...state,
+        board: {
+          ...state.board,
+          field: initialState.board.field
+        }
+      }
     default:
       return state;
   }

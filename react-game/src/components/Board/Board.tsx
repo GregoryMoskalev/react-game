@@ -11,6 +11,8 @@ import rCSound from '../../assets/ffc89ff250028f8.mp3';
 import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
 
 const Board: React.FC<any> = (props) => {
+  // @ts-ignore
+  const dispatch: ((any) => void) = props.dispatch;
   const field = props.field as FieldOfBugs;
 
   const clickSound = new Audio(popCatSound);
@@ -32,6 +34,10 @@ const Board: React.FC<any> = (props) => {
     return bugs;
   }, [field])
   const flagCounter = 4; // TODO: implement
+
+  const onFlag = (row: number, col: number) => dispatch({type: 'FLAG_CELL', payload: {row, col}})
+  const onOpen = (row: number, col: number) => dispatch({type: 'OPEN_CELL', payload: {row, col}})
+  const onNewGame = () => dispatch({type: 'NEW_GAME'})
 
   useEffect(() => {
     song1.addEventListener(
@@ -166,7 +172,7 @@ const Board: React.FC<any> = (props) => {
       <div className="Board-controls">
         <div className="Board-stats">
           <div className="Board-timer">{timer}</div>
-          <button className="NewGame" onClick={handleNewGame}>
+          <button className="NewGame" onClick={onNewGame}>
             {button}
           </button>
           <div className="flag-counter">
@@ -180,16 +186,19 @@ const Board: React.FC<any> = (props) => {
       </div>
 
       <div>
-        {props.field.map((row: [], x: number) => {
+        {props.field.map((row: [], rowNum: number) => {
           return (
-            <div key={x} className="Board-row">
-              {row.map((cell, y: number) => {
+            <div key={rowNum} className="Board-row">
+              {row.map((cell, cellNum: number) => {
                 return (
                   <Cell
-                    key={`${x}-${y}`}
+                    key={`${rowNum}-${cellNum}`}
                     cell={cell}
-                    handleClick={(e) => handleClick(x, y, e)}
-                    handleContextMenu={(e) => handleContextMenu(x, y, e)}
+                    handleClick={() => onOpen(rowNum, cellNum)}
+                    handleContextMenu={(e) => {
+                      e.preventDefault();
+                      onFlag(rowNum, cellNum)
+                    }}
                   />
                 );
               })}
