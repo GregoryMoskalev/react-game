@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Cell, { Flag } from '../Cell/Cell';
 import { FieldOfBugs } from '../../utils/utils';
+import boardActions from '../../store/boardActions';
 import './Board.scss';
 
 // features to implement:
@@ -72,11 +73,7 @@ const Board: React.FC<any> = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: (a: any) => void) => ({
-  onFlag: (row: number, col: number) => dispatch({type: 'FLAG_CELL', payload: {row, col}}),
-  onOpen: (row: number, col: number) => dispatch({type: 'OPEN_CELL', payload: {row, col}}),
-  onNewGame: () => dispatch({type: 'NEW_GAME'}),
-});
+const mapDispatchToProps = boardActions;
 const mapStateToProps = (state: any) => ({
   audioVolume: state.settings.audioVolume,
   difficulty: state.settings.difficulty,

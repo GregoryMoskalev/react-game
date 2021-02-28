@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './GameSettings.scss';
 import { connect } from 'react-redux';
+import settingActions from '../../store/settingActions';
 
-interface GameSettingsProps {
+type DispatchProps = typeof settingActions;
+type StateProps = {
   audioVolume: {
     sound: number;
     music: number;
@@ -11,15 +13,8 @@ interface GameSettingsProps {
   difficulty: string;
 }
 
-type InputChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
-
-const GameSettings: React.FC<GameSettingsProps> = (props) => {
-  // @ts-ignore
-  const dispatch: ((any) => void) = props.dispatch;
-  const onDifficultyChange: InputChangeHandler = (e) => dispatch({type: 'DIFFICULTY_CHANGE', payload: e.target.value});
-  const onVolumeSettingChange = (soundType: String, level: Number) => dispatch({
-    type: 'VOLUME_SETTING_CHANGE', payload: {soundType, level}
-  });
+const GameSettings: React.FC<DispatchProps & StateProps> = (props) => {
+  const {onDifficultyChange, onVolumeSettingChange} = props;
 
   return (
     <React.Fragment>
@@ -28,7 +23,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         <div className="radio-button">
           <input
             checked={props.difficulty === "junior"}
-            onChange={onDifficultyChange}
+            onChange={(e) => onDifficultyChange(e.target.value)}
             className="radio-input"
             type="radio"
             id="difficultyEasy"
@@ -42,7 +37,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         <div className="radio-button">
           <input
             checked={props.difficulty === "middle"}
-            onChange={onDifficultyChange}
+            onChange={(e) => onDifficultyChange(e.target.value)}
             className="radio-input"
             type="radio"
             id="difficultyMedium"
@@ -56,7 +51,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         <div className="radio-button">
           <input
             checked={props.difficulty === "senior"}
-            onChange={onDifficultyChange}
+            onChange={(e) => onDifficultyChange(e.target.value)}
             className="radio-input"
             type="radio"
             id="difficultyExpert"
@@ -104,12 +99,8 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
   );
 };
 
-const mapStateToProps = (state: any) => {
-  const {audioVolume, difficulty} = state.settings;
-  const props: GameSettingsProps = {
-    audioVolume,
-    difficulty,
-  }
-  return props;
-};
-export default connect(mapStateToProps)(GameSettings);
+const mapStateToProps: (state: any) => StateProps = (state) => ({
+  audioVolume: state.settings.audioVolume,
+  difficulty: state.settings.difficulty,
+});
+export default connect(mapStateToProps, settingActions)(GameSettings);
