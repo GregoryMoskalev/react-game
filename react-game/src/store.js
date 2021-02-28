@@ -7,11 +7,37 @@ const initialState = {
       sound: 0.3,
       music: .0,
     },
-    bugs: 10
+    bugs: 10,
+    difficulty: 'junior'
   }
 }
 
-const reducer = (state, action) => state;
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'DIFFICULTY_CHANGE':
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          difficulty: action.payload
+        }
+      }
+    case 'VOLUME_SETTING_CHANGE':
+      const {soundType, level} = action.payload;
+      return {
+        ...state,
+        settings: {
+          ...state.settings,
+          audioVolume: {
+            ...state.settings.audioVolume,
+            [soundType]: level
+          }
+        }
+      }
+    default:
+      return state;
+  }
+};
 
 export default createStore(
   reducer,

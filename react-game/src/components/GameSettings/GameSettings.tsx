@@ -8,15 +8,19 @@ interface GameSettingsProps {
     sound: number;
     music: number;
   };
-  handleVolumeChange: (sound: number, music: number) => void;
   bugs: number;
-  handleChange: (arg0: number) => void;
+  difficulty: string;
 }
 
 type InputChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
 
 const GameSettings: React.FC<GameSettingsProps> = (props) => {
-  const onDifficultyChange: InputChangeHandler = (e) => props.handleChange(Number(e.target.value));
+  // @ts-ignore
+  const dispatch: ((any) => void) = props.dispatch;
+  const onDifficultyChange: InputChangeHandler = (e) => dispatch({type: 'DIFFICULTY_CHANGE', payload: e.target.value});
+  const onVolumeSettingChange = (soundType: String, level: Number) => dispatch({
+    type: 'VOLUME_SETTING_CHANGE', payload: {soundType, level}
+  });
 
   return (
     <React.Fragment>
@@ -24,13 +28,13 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         <h4 className="settings-heading">Difficulty</h4>
         <div className="radio-button">
           <input
-            checked={props.bugs === 10}
+            checked={props.difficulty === "junior"}
             onChange={onDifficultyChange}
             className="radio-input"
             type="radio"
             id="difficultyEasy"
             name="difficulty"
-            value="0"
+            value="junior"
           />
           <label className="radio-label easy" htmlFor="difficultyEasy">
             Easy
@@ -38,13 +42,13 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
         <div className="radio-button">
           <input
-            checked={props.bugs === 40}
+            checked={props.difficulty === "middle"}
             onChange={onDifficultyChange}
             className="radio-input"
             type="radio"
             id="difficultyMedium"
             name="difficulty"
-            value="1"
+            value="middle"
           />
           <label className="radio-label medium" htmlFor="difficultyMedium">
             Medium
@@ -52,13 +56,13 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
         <div className="radio-button">
           <input
-            checked={props.bugs === 99}
+            checked={props.difficulty === "senior"}
             onChange={onDifficultyChange}
             className="radio-input"
             type="radio"
             id="difficultyExpert"
             name="difficulty"
-            value="2"
+            value="senior"
           />
           <label className="radio-label expert" htmlFor="difficultyExpert">
             Expert
@@ -71,7 +75,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
           <label htmlFor="sound">Sound</label>
           <input
             value={props.audioVolume.sound}
-            onChange={(e) => props.handleVolumeChange(Number(e.target.value), props.audioVolume.music)}
+            onChange={(e) => onVolumeSettingChange("sound", Number(e.target.value))}
             type="range"
             step="0.1"
             id="sound"
@@ -84,7 +88,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
           <label htmlFor="music">Music</label>
           <input
             value={props.audioVolume.music}
-            onChange={(e) => props.handleVolumeChange(props.audioVolume.sound, Number(e.target.value))}
+            onChange={(e) => onVolumeSettingChange("music", Number(e.target.value))}
             type="range"
             step="0.1"
             id="music"
@@ -102,12 +106,11 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
 };
 
 const mapStateToProps = (state: any) => {
-  const {audioVolume, bugs} = state.settings;
+  const {audioVolume, bugs, difficulty} = state.settings;
   const props: GameSettingsProps = {
     audioVolume,
     bugs,
-    handleChange: () => {},
-    handleVolumeChange: () => {},
+    difficulty,
   }
   return props;
 };
