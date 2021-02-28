@@ -24,14 +24,11 @@ const toggleFullScreen = () => {
 
 const Board: React.FC<any> = (props) => {
   // @ts-ignore
-  const dispatch: ((any) => void) = props.dispatch;
+  const {onNewGame, onFlag, onOpen} = props;
   const field = props.field as FieldOfBugs;
   const timer = '00:00';
   const button = '🙂';
   const flagCounter = 4;
-  const onFlag = (row: number, col: number) => dispatch({type: 'FLAG_CELL', payload: {row, col}})
-  const onOpen = (row: number, col: number) => dispatch({type: 'OPEN_CELL', payload: {row, col}})
-  const onNewGame = () => dispatch({type: 'NEW_GAME'})
 
   const renderedRows = field.map((row, rowNum) => (
     <div key={rowNum} className="Board-row">
@@ -75,9 +72,14 @@ const Board: React.FC<any> = (props) => {
   );
 };
 
+const mapDispatchToProps = (dispatch: (a: any) => void) => ({
+  onFlag: (row: number, col: number) => dispatch({type: 'FLAG_CELL', payload: {row, col}}),
+  onOpen: (row: number, col: number) => dispatch({type: 'OPEN_CELL', payload: {row, col}}),
+  onNewGame: () => dispatch({type: 'NEW_GAME'}),
+});
 const mapStateToProps = (state: any) => ({
   audioVolume: state.settings.audioVolume,
   difficulty: state.settings.difficulty,
   field: state.board.field
 });
-export default connect(mapStateToProps)(Board);
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
