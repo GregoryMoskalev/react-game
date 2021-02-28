@@ -1,5 +1,4 @@
-
-import { createStore } from 'redux';
+import {createStore} from 'redux';
 
 const initialState = {
   settings: {
@@ -8,7 +7,19 @@ const initialState = {
       music: .0,
     },
     difficulty: 'junior'
-  }
+  },
+  board: {
+    field: [
+      [
+        {value: 1, open: false, flag: false},
+        {value: 'B', open: false, flag: false},
+      ],
+      [
+        {value: 'B', open: false, flag: false},
+        {value: 8, open: false, flag: false},
+      ]
+    ],
+  },
 }
 
 const reducer = (state, action) => {

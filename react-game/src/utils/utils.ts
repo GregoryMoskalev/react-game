@@ -1,6 +1,6 @@
 export interface TileProps extends Record<string, string | boolean | number> {}
 
-type FieldOfBugs = TileProps[][];
+export type FieldOfBugs = TileProps[][];
 
 export const createMatrix = (x: number, y: number, fill: any) => {
   return new Array(x).fill(0).map(() => new Array(y).fill(fill));

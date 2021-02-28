@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import GameSettings from '../GameSettings/GameSettings';
 import Board from '../Board/Board';
 import Footer from '../Footer/Footer';
-import useStateAndLS from '../../hooks/useStateAndLS';
 import './App.scss';
 
 const changeDifficulty = (difficulty: number) => {
@@ -34,35 +33,11 @@ const changeDifficulty = (difficulty: number) => {
 };
 
 const App: React.FC = () => {
-  const [audioVolume] = useStateAndLS(
-    {
-      sound: 0.5,
-      music: 0,
-    },
-    'bugsweeper-audio-volume',
-  );
-  const [difficulty] = useStateAndLS(changeDifficulty(0), 'bugsweeper-difficulty');
-
   return (
     <div className="App">
       <Switch>
-        <Route
-          exact
-          path="/"
-          render={(props: any) => (
-            <Board
-              audioVolume={audioVolume}
-              rows={difficulty.rows}
-              columns={difficulty.columns}
-              bugs={difficulty.bugs}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/settings"
-          component={GameSettings}
-        />
+        <Route exact path="/" component={Board} />
+        <Route exact path="/settings" component={GameSettings} />
       </Switch>
       <Footer />
     </div>

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Cell, { Flag } from '../Cell/Cell';
-import { plantBugs, openEmptyTiles } from '../../utils/utils';
-import useStateAndLS from '../../hooks/useStateAndLS';
+import { plantBugs, openEmptyTiles, FieldOfBugs } from '../../utils/utils';
 import './Board.scss';
 import popCatSound from '../../assets/pop_cat.mp3';
 import onLoseSound from '../../assets/Wilhelm_Scream.mp3';
@@ -11,21 +11,27 @@ import rCSound from '../../assets/ffc89ff250028f8.mp3';
 import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
 
 const Board: React.FC<any> = (props) => {
+  const field = props.field as FieldOfBugs;
+
   const clickSound = new Audio(popCatSound);
   const rClickSound = new Audio(rCSound);
   const loseSound = new Audio(onLoseSound);
   const winSound = new Audio(winS);
   const song1 = new Audio(music1);
+
   const [timer, setTimer] = useState('00:00');
   const [timerId, setTimerId] = useState(0);
-  const [state, setState] = useStateAndLS(
-    {
-      ...plantBugs(props.rows, props.columns, props.bugs),
-      flagCounter: props.bugs,
-    },
-    'bugsweeper-save',
-  );
-  const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
+  const [button, setButton] = useState('🙂');
+  const listOfBugs = useMemo(() => {
+    const bugs: Array<number[]> = [];
+    field.forEach((row, i) => row.forEach((cell, j) => {
+      if (cell.value === 'B') {
+        bugs.push([i, j]);
+      }
+    }));
+    return bugs;
+  }, [field])
+  const flagCounter = 4; // TODO: implement
 
   useEffect(() => {
     song1.addEventListener(
@@ -47,15 +53,6 @@ const Board: React.FC<any> = (props) => {
     };
   }, []);
 
-  useEffect(
-    () => {
-      if (state.flagCounter === 0) {
-        checkWin();
-      }
-    },
-    [state.flagCounter, state.field],
-  );
-
   const onLose = () => {
     if (props.audioVolume.sound) {
       loseSound.volume = props.audioVolume.sound > 0.3 ? 0.3 : props.audioVolume.sound;
@@ -63,34 +60,34 @@ const Board: React.FC<any> = (props) => {
       clearInterval(timerId);
     }
     // open all bugs
-    state.listOfBugs.forEach((e: number[]) => {
+    listOfBugs.forEach((e: number[]) => {
       const [x, y] = e;
-      state.field[x][y].open = true;
+      field[x][y].open = true;
     });
   };
 
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
     let button = '🙂';
-    if (!state.field[x][y].flag) {
-      if (state.field[x][y].value === 'B') {
+    if (!field[x][y].flag) {
+      if (field[x][y].value === 'B') {
         onLose();
         button = '💀';
-      } else if (!state.field[x][y].open) {
+      } else if (!field[x][y].open) {
         if (props.audioVolume.sound) {
           clickSound.volume = props.audioVolume.sound;
           clickSound.play();
         }
         setButton('😯');
       }
-      const arr = [...state.field];
+      const arr = [...field];
       arr[x][y].open = true;
       openEmptyTiles(x, y, arr);
-      setState({
-        listOfBugs: state.listOfBugs,
-        flagCounter: state.flagCounter,
-        field: [...arr],
-      });
+      //setState({
+      //  listOfBugs: state.listOfBugs,
+      //  flagCounter: state.flagCounter,
+      //  field: [...arr],
+      //});
 
       setTimeout(() => {
         setButton(button);
@@ -103,10 +100,10 @@ const Board: React.FC<any> = (props) => {
     //@ts-ignore
     setTimerId(time());
     setButton('🙂');
-    setState({
-      ...plantBugs(props.rows, props.columns, props.bugs),
-      flagCounter: props.bugs,
-    });
+    //setState({
+    //  ...plantBugs(props.rows, props.columns, props.bugs),
+    //  flagCounter: props.bugs,
+    //});
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
@@ -114,23 +111,23 @@ const Board: React.FC<any> = (props) => {
     rClickSound.volume = props.audioVolume.sound;
     rClickSound.currentTime = 0;
     rClickSound.play();
-    if (!state.field[x][y].open && (state.flagCounter > 0 || state.field[x][y].flag)) {
-      const arr = [...state.field];
-      const counter = arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1;
+    if (!field[x][y].open && (flagCounter > 0 || field[x][y].flag)) {
+      const arr = [...field];
+      const counter = arr[x][y].flag ? flagCounter + 1 : flagCounter - 1;
       arr[x][y].flag = !arr[x][y].flag;
-      setState({
-        listOfBugs: state.listOfBugs,
-        flagCounter: counter,
-        field: [...arr],
-      });
+      // setState({
+      //   listOfBugs: state.listOfBugs,
+      //   flagCounter: counter,
+      //   field: [...arr],
+      // });
     }
   };
 
   const checkWin = () => {
     if (
-      state.listOfBugs.every((e: number[]) => {
+      listOfBugs.every((e: number[]) => {
         const [x, y] = e;
-        return state.field[x][y].flag;
+        return field[x][y].flag;
       })
     ) {
       winSound.play();
@@ -174,7 +171,7 @@ const Board: React.FC<any> = (props) => {
           </button>
           <div className="flag-counter">
             <Flag flag={true} />
-            <span className="counter">{state.flagCounter}</span>
+            <span className="counter">{flagCounter}</span>
           </div>
         </div>
         <Link className="material-icons settings-btn" to="/settings">
@@ -183,7 +180,7 @@ const Board: React.FC<any> = (props) => {
       </div>
 
       <div>
-        {state.field.map((row: [], x: number) => {
+        {props.field.map((row: [], x: number) => {
           return (
             <div key={x} className="Board-row">
               {row.map((cell, y: number) => {
@@ -204,4 +201,9 @@ const Board: React.FC<any> = (props) => {
   );
 };
 
-export default Board;
+const mapStateToProps = (state: any) => ({
+  audioVolume: state.settings.audioVolume,
+  difficulty: state.settings.difficulty,
+  field: state.board.field
+});
+export default connect(mapStateToProps)(Board);
