@@ -7,7 +7,6 @@ const initialState = {
       sound: 0.3,
       music: .0,
     },
-    bugs: 10,
     difficulty: 'junior'
   }
 }

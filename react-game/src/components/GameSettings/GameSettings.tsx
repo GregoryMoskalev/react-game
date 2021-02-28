@@ -8,7 +8,6 @@ interface GameSettingsProps {
     sound: number;
     music: number;
   };
-  bugs: number;
   difficulty: string;
 }
 
@@ -106,10 +105,9 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
 };
 
 const mapStateToProps = (state: any) => {
-  const {audioVolume, bugs, difficulty} = state.settings;
+  const {audioVolume, difficulty} = state.settings;
   const props: GameSettingsProps = {
     audioVolume,
-    bugs,
     difficulty,
   }
   return props;
