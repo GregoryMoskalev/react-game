@@ -6,6 +6,7 @@ import { LanguageContext } from '../../contexts/LanguageContext';
 import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
+import useStateAndLSForTimer from '../../hooks/useStateAndLSForTimer';
 import './Board.scss';
 //audio
 import popCatSound from '../../assets/pop_cat.mp3';
@@ -21,8 +22,7 @@ const Board: React.FC<any> = (props) => {
   const loseSound = new Audio(onLoseSound);
   const winSound = new Audio(winS);
   const song1 = new Audio(music1);
-  const [timer, setTimer] = useState('00:00');
-  const [timerId, setTimerId] = useState(0);
+  const [timer, startTimer, stopTimer] = useStateAndLSForTimer();
   const [state, setState] = useStateAndLS(
     {
       ...plantBugs(props.rows, props.columns, props.bugs),
@@ -32,6 +32,11 @@ const Board: React.FC<any> = (props) => {
   );
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
   useEffect(() => {
+    // чтобы не плодить сущности проверяю морду, если она не дефолтная - игра чем то закончилась и таймер пускать заново не надо
+    if (button === '🙂') {
+      startTimer(false);
+    }
+
     song1.addEventListener(
       'ended',
       function() {
@@ -48,6 +53,7 @@ const Board: React.FC<any> = (props) => {
     }
     return function cleanup() {
       song1.pause();
+      stopTimer();
     };
   }, []);
 
@@ -64,9 +70,8 @@ const Board: React.FC<any> = (props) => {
     if (props.audioVolume.sound) {
       loseSound.volume = props.audioVolume.sound > 0.3 ? 0.3 : props.audioVolume.sound;
       loseSound.play();
-      clearInterval(timerId);
+      stopTimer();
     }
-    // open all bugs
     state.listOfBugs.forEach((e: number[]) => {
       const [x, y] = e;
       state.field[x][y].open = true;
@@ -103,9 +108,7 @@ const Board: React.FC<any> = (props) => {
   };
 
   const handleNewGame = () => {
-    clearInterval(timerId);
-    //@ts-ignore
-    setTimerId(time());
+    startTimer(true);
     setButton('🙂');
     setState({
       ...plantBugs(props.rows, props.columns, props.bugs),
@@ -139,7 +142,7 @@ const Board: React.FC<any> = (props) => {
     ) {
       winSound.play();
       setButton('🥳');
-      clearInterval(timerId);
+      stopTimer();
     }
   };
 
@@ -147,13 +150,6 @@ const Board: React.FC<any> = (props) => {
     const sec = String(Math.floor((delta / 1000) % 60));
     const min = String(Math.floor((delta / (1000 * 60)) % 60));
     return `${min.padStart(2, '0')}:${sec.padStart(2, '0')}`;
-  };
-
-  const time = () => {
-    const start = Date.now();
-    return setInterval(() => {
-      setTimer(convertTime(Date.now() - start));
-    }, 100);
   };
 
   const toggleFullScreen = () => {
@@ -172,7 +168,7 @@ const Board: React.FC<any> = (props) => {
       </button>
       <div className="Board-controls">
         <div className="Board-stats">
-          <div className="Board-timer">{timer}</div>
+          <div className="Board-timer">{convertTime(timer)}</div>
           <button className="NewGame" onClick={handleNewGame}>
             {button}
           </button>
@@ -181,7 +177,7 @@ const Board: React.FC<any> = (props) => {
             <span className="counter">{state.flagCounter}</span>
           </div>
         </div>
-        <Link className="material-icons settings-btn" to="/settings">
+        <Link onClick={() => stopTimer()} className="material-icons settings-btn" to="/settings">
           settings
         </Link>
       </div>
