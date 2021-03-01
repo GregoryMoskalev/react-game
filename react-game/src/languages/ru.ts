@@ -8,4 +8,6 @@ export default {
   soundVolume: 'Звук',
   musicVolume: 'Музыка',
   playBtn: 'Играть',
+  mineTheme: 'Вид мин',
+  languageSettings: 'Язык',
 };

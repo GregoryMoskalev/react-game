@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { MineThemeContext } from '../../contexts/MineThemeContext';
 import { TileProps } from '../../utils/utils';
 import './Cell.scss';
 
@@ -9,7 +10,12 @@ interface CellProps {
 }
 
 const Bug: React.FC<{ open: boolean | string | number }> = (props) => {
-  return <div className={props.open ? 'material-icons Bug' : 'Bug'}>pest_control</div>;
+  const MineTheme = useContext(MineThemeContext);
+  return (
+    <div className={props.open ? 'material-icons Bug' : 'Bug'}>
+      {MineTheme.mine === 'bug' ? 'pest_control' : 'coronavirus'}
+    </div>
+  );
 };
 
 export const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {

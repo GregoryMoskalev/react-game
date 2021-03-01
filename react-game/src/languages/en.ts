@@ -8,4 +8,6 @@ export default {
   soundVolume: 'Sound',
   musicVolume: 'Music',
   playBtn: 'Play',
+  mineTheme: 'Mine theme',
+  languageSettings: 'Language',
 };

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import languages from '../../languages/languages';
 import { LanguageContext } from '../../contexts/LanguageContext';
+import { MineThemeContext } from '../../contexts/MineThemeContext';
 import './GameSettings.scss';
 
 interface GameSettingsProps {
@@ -17,6 +18,7 @@ interface GameSettingsProps {
 
 const GameSettings: React.FC<GameSettingsProps> = (props) => {
   const langContext = useContext(LanguageContext);
+  const MineTheme = useContext(MineThemeContext);
 
   return (
     <React.Fragment>
@@ -66,7 +68,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
           </label>
         </div>
       </div>
-      <div>
+      <div className="radio-group volume">
         <h4 className="settings-heading">{languages[langContext!.lang].audioSettings}</h4>
         <div
           className="sound-volume"
@@ -106,7 +108,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           langContext!.changeLang(e.target.value)}
       >
-        <h4 className="settings-heading">Language</h4>
+        <h4 className="settings-heading">{languages[langContext!.lang].languageSettings}</h4>
         <div className="radio-button">
           <input
             defaultChecked={langContext!.lang === 'en'}
@@ -134,6 +136,15 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
           </label>
         </div>
       </div>
+      <h4 className="settings-heading">{languages[langContext!.lang].mineTheme}</h4>
+      <label className="switch">
+        <input
+          defaultChecked={MineTheme.mine === 'bug'}
+          onChange={() => MineTheme.changeMineTheme()}
+          type="checkbox"
+        />
+        <span className="slider round material-icons" />
+      </label>
       <Link className="play-btn" to="/">
         {languages[langContext!.lang].playBtn}
       </Link>
