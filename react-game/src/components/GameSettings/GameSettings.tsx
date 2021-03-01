@@ -1,5 +1,8 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+
+import languages from '../../languages/languages';
+import { LanguageContext } from '../../contexts/LanguageContext';
 import './GameSettings.scss';
 
 interface GameSettingsProps {
@@ -13,6 +16,8 @@ interface GameSettingsProps {
 }
 
 const GameSettings: React.FC<GameSettingsProps> = (props) => {
+  const langContext = useContext(LanguageContext);
+
   return (
     <React.Fragment>
       <div
@@ -20,7 +25,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           props.handleChange(Number(e.target.value))}
       >
-        <h4 className="settings-heading">Difficulty</h4>
+        <h4 className="settings-heading">{languages[langContext!.lang].difficulty}</h4>
         <div className="radio-button">
           <input
             defaultChecked={props.bugs === 10}
@@ -31,7 +36,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             value="0"
           />
           <label className="radio-label easy" htmlFor="difficultyEasy">
-            Easy
+            {languages[langContext!.lang].easyDifficulty}
           </label>
         </div>
         <div className="radio-button">
@@ -44,7 +49,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             value="1"
           />
           <label className="radio-label medium" htmlFor="difficultyMedium">
-            Medium
+            {languages[langContext!.lang].mediumDifficulty}
           </label>
         </div>
         <div className="radio-button">
@@ -57,17 +62,17 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             value="2"
           />
           <label className="radio-label expert" htmlFor="difficultyExpert">
-            Expert
+            {languages[langContext!.lang].expertDifficulty}
           </label>
         </div>
       </div>
       <div>
-        <h4 className="settings-heading">Audio settings</h4>
+        <h4 className="settings-heading">{languages[langContext!.lang].audioSettings}</h4>
         <div
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.handleVolumeChange(Number(e.target.value), props.audioVolume.music)}
         >
-          <label htmlFor="sound">Sound</label>
+          <label htmlFor="sound">{languages[langContext!.lang].soundVolume}</label>
           <input
             defaultValue={props.audioVolume.sound}
             type="range"
@@ -82,7 +87,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.handleVolumeChange(props.audioVolume.sound, Number(e.target.value))}
         >
-          <label htmlFor="music">Music</label>
+          <label htmlFor="music">{languages[langContext!.lang].musicVolume}</label>
           <input
             defaultValue={props.audioVolume.music}
             type="range"
@@ -92,6 +97,39 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             min="0"
             max="1"
           />
+        </div>
+      </div>
+      <div
+        className="radio-group language"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          langContext!.changeLang(e.target.value)}
+      >
+        <h4 className="settings-heading">Language</h4>
+        <div className="radio-button">
+          <input
+            defaultChecked={langContext!.lang === 'en'}
+            className="radio-input"
+            type="radio"
+            id="langEn"
+            name="lang"
+            value="en"
+          />
+          <label className="radio-label lang-en" htmlFor="langEn">
+            🇬🇧 English
+          </label>
+        </div>
+        <div className="radio-button">
+          <input
+            defaultChecked={langContext!.lang === 'ru'}
+            className="radio-input"
+            type="radio"
+            id="langRu"
+            name="lang"
+            value="ru"
+          />
+          <label className="radio-label lang-ru" htmlFor="langRu">
+            🇷🇺 Русский
+          </label>
         </div>
       </div>
       <Link className="play-btn" to="/">

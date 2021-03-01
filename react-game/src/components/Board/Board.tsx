@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+
+import languages from '../../languages/languages';
+import { LanguageContext } from '../../contexts/LanguageContext';
 import Cell, { Flag } from '../Cell/Cell';
 import { plantBugs, openEmptyTiles } from '../../utils/utils';
 import useStateAndLS from '../../hooks/useStateAndLS';
 import './Board.scss';
+//audio
 import popCatSound from '../../assets/pop_cat.mp3';
 import onLoseSound from '../../assets/Wilhelm_Scream.mp3';
 import winS from '../../assets/b146dc8d75d05f3.mp3';
@@ -11,6 +15,7 @@ import rCSound from '../../assets/ffc89ff250028f8.mp3';
 import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
 
 const Board: React.FC<any> = (props) => {
+  const langContext = useContext(LanguageContext);
   const clickSound = new Audio(popCatSound);
   const rClickSound = new Audio(rCSound);
   const loseSound = new Audio(onLoseSound);
@@ -26,7 +31,7 @@ const Board: React.FC<any> = (props) => {
     'bugsweeper-save',
   );
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
-
+  console.log(langContext);
   useEffect(() => {
     song1.addEventListener(
       'ended',
@@ -162,7 +167,7 @@ const Board: React.FC<any> = (props) => {
 
   return (
     <div className="Board">
-      <h1 className="heading h-1">Bugsweeper</h1>
+      <h1 className="heading h-1">{languages[langContext!.lang].heading}</h1>
       <button className="fullscreen-btn material-icons" onClick={toggleFullScreen}>
         fullscreen
       </button>
@@ -181,7 +186,6 @@ const Board: React.FC<any> = (props) => {
           settings
         </Link>
       </div>
-
       <div>
         {state.field.map((row: [], x: number) => {
           return (

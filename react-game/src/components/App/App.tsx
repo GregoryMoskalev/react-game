@@ -4,6 +4,7 @@ import GameSettings from '../GameSettings/GameSettings';
 import Board from '../Board/Board';
 import Footer from '../Footer/Footer';
 import useStateAndLS from '../../hooks/useStateAndLS';
+import { LanguageProvider } from '../../contexts/LanguageContext';
 import './App.scss';
 
 const changeDifficulty = (difficulty: number) => {
@@ -55,35 +56,37 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
-      <Switch>
-        <Route
-          exact
-          path="/"
-          render={(props: any) => (
-            <Board
-              audioVolume={audioVolume}
-              rows={difficulty.rows}
-              columns={difficulty.columns}
-              bugs={difficulty.bugs}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/settings"
-          render={(props: any) => (
-            <GameSettings
-              audioVolume={audioVolume}
-              handleVolumeChange={handleVolumeChange}
-              bugs={difficulty.bugs}
-              handleChange={(n) => handleDifficultyChange(n)}
-            />
-          )}
-        />
-      </Switch>
-      <Footer />
-    </div>
+    <LanguageProvider>
+      <div className="App">
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props: any) => (
+              <Board
+                audioVolume={audioVolume}
+                rows={difficulty.rows}
+                columns={difficulty.columns}
+                bugs={difficulty.bugs}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/settings"
+            render={(props: any) => (
+              <GameSettings
+                audioVolume={audioVolume}
+                handleVolumeChange={handleVolumeChange}
+                bugs={difficulty.bugs}
+                handleChange={(n) => handleDifficultyChange(n)}
+              />
+            )}
+          />
+        </Switch>
+        <Footer />
+      </div>
+    </LanguageProvider>
   );
 };
 

@@ -66,6 +66,10 @@
     &.expert {
       background-color: $color-red;
     }
+    &.lang-en,
+    &.lang-ru {
+      background-color: $color-blue;
+    }
   }
 }
 .play-btn {
