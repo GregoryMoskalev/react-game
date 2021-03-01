@@ -7,7 +7,6 @@ import boardActions from '../../store/boardActions';
 import './Board.scss';
 
 // features to implement:
-// * random start with difficulty settings
 // * save to local storage
 // * sound effects
 // * music

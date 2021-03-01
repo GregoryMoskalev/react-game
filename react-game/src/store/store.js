@@ -1,6 +1,12 @@
 import {createStore} from 'redux';
 import {cellStr, expandIfEmpty} from '../utils/utils'
 
+const difficulties = {
+  junior: {rows: 9, columns: 9, bugs: 10},
+  middle: {rows: 16, columns: 16, bugs: 40},
+  senior: {rows: 30, columns: 16, bugs: 99},
+}
+
 const initialState = {
   settings: {
     audioVolume: {
@@ -29,7 +35,7 @@ function handleOpen(boardState, {row, col}) {
     return boardState;
   }
 
-  const newOpened = [...new Set([...field.opened, toOpen,...expandIfEmpty(field, row, col)])];
+  const newOpened = [...new Set([...field.opened, toOpen, ...expandIfEmpty(field, row, col)])];
   const newBoard = {
     ...boardState,
     field: {
@@ -56,7 +62,9 @@ function handleFlag(boardState, {row, col}) {
     return boardState;
   }
   let newFlags;
-  if (field.flags.includes(toFlag)) {
+  if (field.opened.length === 0) {
+    newFlags = field.flags; // game starts from opening, not flag
+  } else if (field.flags.includes(toFlag)) {
     // unflag
     newFlags = field.flags.filter(f => f !== toFlag);
   } else if (field.flags.length >= field.bugs.length) {
@@ -71,6 +79,21 @@ function handleFlag(boardState, {row, col}) {
       flags: newFlags
     }
   }
+}
+
+function randomField(difficulty) {
+  const {rows, columns, bugs} = difficulties[difficulty] || difficulties.junior;
+  const bugSet = new Set();
+
+  function randomInt(lessThan) {
+    return Math.floor(Math.random() * lessThan);
+  }
+
+  while (bugSet.size < bugs) {
+    bugSet.add(cellStr(randomInt(rows), randomInt(columns)));
+  }
+
+  return {rows, columns, bugs: [...bugSet], opened: [], flags: []};
 }
 
 const reducer = (state, action) => {
@@ -108,7 +131,10 @@ const reducer = (state, action) => {
     case 'NEW_GAME':
       return {
         ...state,
-        board: initialState.board
+        board: {
+          ...initialState.board,
+          field: randomField(state.settings.difficulty)
+        }
       }
     default:
       return state;
