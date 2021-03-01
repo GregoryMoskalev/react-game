@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Cell, { Flag } from '../Cell/Cell';
-import { FieldOfBugs } from '../../utils/utils';
+import { cellStr, createBugNumMatrix } from '../../utils/utils';
 import boardActions from '../../store/boardActions';
 import './Board.scss';
 
 // features to implement:
-// * remaining flags counter
-// * handle lose
-// * handle win
+// * random start with difficulty settings
+// * save to local storage
 // * sound effects
 // * music
-// * 💀🙂😯
+// * emoji for mouseDown
+// * bulk open (left+right click on digit)
+// * make it impossible to fail at the first open?
 // * timer
+// * more typescript
 
 const toggleFullScreen = () => {
   if (!document.fullscreenElement) {
@@ -24,24 +26,40 @@ const toggleFullScreen = () => {
 };
 
 const Board: React.FC<any> = (props) => {
-  // @ts-ignore
   const {onNewGame, onFlag, onOpen} = props;
-  const field = props.field as FieldOfBugs;
+  const {field, bang, win} = props;
   const timer = '00:00';
-  const button = '🙂';
-  const flagCounter = 4;
+  const button = bang ? '💀' : win ? '😎' : '🙂';
+  const flagCounter = field.bugs.length - field.flags.length;
 
-  const renderedRows = field.map((row, rowNum) => (
+  const bugNumMatrix = useMemo(
+    () => createBugNumMatrix(field.rows, field.columns, field.bugs),
+    [field.rows, field.columns, field.bugs]
+  );
+
+  const renderedRows = bugNumMatrix.map((row, rowNum) => (
     <div key={rowNum} className="Board-row">
-      {row.map((cell, cellNum) => <Cell
-        key={`${rowNum}-${cellNum}`}
-        cell={cell}
-        handleClick={() => onOpen(rowNum, cellNum)}
-        handleContextMenu={(e) => {
-          e.preventDefault();
-          onFlag(rowNum, cellNum)
-        }}
-      />)}
+      {row.map((bugsAround, cellNum) => {
+        const cellId = cellStr(rowNum, cellNum)
+        const open = field.opened.includes(cellId);
+        const flag = field.flags.includes(cellId);
+        const bug = field.bugs.includes(cellId);
+        const cellObj = {
+          open: open || bang || win,
+          flag: flag || (bug && win),
+          value: bug ? 'B' : bugsAround
+        };
+
+        return <Cell
+          key={cellId}
+          cell={cellObj}
+          handleClick={() => onOpen(rowNum, cellNum)}
+          handleContextMenu={(e) => {
+            e.preventDefault();
+            onFlag(rowNum, cellNum)
+          }}
+        />
+      })}
     </div>
   ));
 
@@ -77,6 +95,8 @@ const mapDispatchToProps = boardActions;
 const mapStateToProps = (state: any) => ({
   audioVolume: state.settings.audioVolume,
   difficulty: state.settings.difficulty,
-  field: state.board.field
+  field: state.board.field,
+  bang: state.board.bang,
+  win: state.board.win,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
