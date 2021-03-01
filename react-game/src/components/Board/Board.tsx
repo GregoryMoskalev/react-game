@@ -31,7 +31,6 @@ const Board: React.FC<any> = (props) => {
     'bugsweeper-save',
   );
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
-  console.log(langContext);
   useEffect(() => {
     song1.addEventListener(
       'ended',

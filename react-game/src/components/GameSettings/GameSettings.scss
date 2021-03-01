@@ -53,6 +53,7 @@
     }
   }
 }
+
 .radio-input {
   display: none;
   &:checked + .radio-label {
@@ -72,6 +73,14 @@
     }
   }
 }
+
+.music-volume,
+.sound-volume {
+  display: flex;
+  flex-direction: column;
+  margin: 1.2rem;
+}
+
 .play-btn {
   display: flex;
   justify-content: center;

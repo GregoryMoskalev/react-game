@@ -1,6 +1,6 @@
 export default {
   heading: 'Bugsweeper, но типа на русском',
-  Difficulty: 'Сложность',
+  difficulty: 'Сложность',
   easyDifficulty: 'Легко',
   mediumDifficulty: 'Средне',
   expertDifficulty: 'Эксперт',

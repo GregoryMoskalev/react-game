@@ -69,6 +69,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
       <div>
         <h4 className="settings-heading">{languages[langContext!.lang].audioSettings}</h4>
         <div
+          className="sound-volume"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.handleVolumeChange(Number(e.target.value), props.audioVolume.music)}
         >
@@ -84,6 +85,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
           />
         </div>
         <div
+          className="music-volume"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.handleVolumeChange(props.audioVolume.sound, Number(e.target.value))}
         >
@@ -133,7 +135,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
       </div>
       <Link className="play-btn" to="/">
-        Play
+        {languages[langContext!.lang].playBtn}
       </Link>
     </React.Fragment>
   );

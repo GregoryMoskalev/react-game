@@ -1,5 +1,6 @@
 export default {
   heading: 'Bugsweeper',
+  difficulty: 'Difficulty',
   easyDifficulty: 'Easy',
   mediumDifficulty: 'Medium',
   expertDifficulty: 'Expert',
