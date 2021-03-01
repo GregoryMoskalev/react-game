@@ -140,9 +140,12 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
-export default createStore(
+const store = createStore(
   reducer,
-  initialState,
+  localStorage.reduxState ? JSON.parse(localStorage.reduxState) : initialState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+
+store.subscribe(() => localStorage.reduxState = JSON.stringify(store.getState()));
+
+export default store;

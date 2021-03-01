@@ -7,7 +7,6 @@ import boardActions from '../../store/boardActions';
 import './Board.scss';
 
 // features to implement:
-// * save to local storage
 // * sound effects
 // * music
 // * emoji for mouseDown
