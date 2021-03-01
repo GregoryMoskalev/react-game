@@ -1,5 +1,5 @@
 import {createStore} from 'redux';
-import {cellStr, expandIfEmpty} from './utils/utils'
+import {cellStr, expandIfEmpty} from '../utils/utils'
 
 const initialState = {
   settings: {
