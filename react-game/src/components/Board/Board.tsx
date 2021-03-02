@@ -252,6 +252,16 @@ const Board: React.FC<any> = (props) => {
           );
         })}
       </div>
+      <div className="keybinds">
+        <h4>{languages[langContext!.lang].keybinds}</h4>
+        <ul className="keybinds-list">
+          <li>{languages[langContext!.lang].keybindNewGame}</li>
+          <li>{languages[langContext!.lang].keybindUp}</li>
+          <li>{languages[langContext!.lang].keybindDown}</li>
+          <li>{languages[langContext!.lang].keybindLeft}</li>
+          <li>{languages[langContext!.lang].keybindRight}</li>
+        </ul>
+      </div>
     </div>
   );
 };

@@ -55,6 +55,21 @@
   }
 }
 
+.keybinds {
+  margin-top: 2rem;
+
+  & h4 {
+    font-weight: 400;
+    letter-spacing: .2rem;
+    margin-bottom: .4rem;
+    text-decoration: underline;
+  }
+
+  &-list {
+    list-style-type: none;
+  }
+}
+
 .NewGame {
   display: flex;
   justify-self: center;

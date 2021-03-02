@@ -10,4 +10,10 @@ export default {
   playBtn: 'Играть',
   mineTheme: 'Вид мин',
   languageSettings: 'Язык',
+  keybinds: 'Управление',
+  keybindUp: 'Вверх - Стрелка Вверх ⬆',
+  keybindDown: 'Вниз - Стрелка Вниз ⬇',
+  keybindLeft: 'Влево - Стрелка Влево ⬅',
+  keybindRight: 'Вправо - Стрелка Вправо ➡',
+  keybindNewGame: 'Новая Игра - N',
 };
