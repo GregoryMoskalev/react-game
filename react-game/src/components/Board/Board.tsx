@@ -22,6 +22,8 @@ const Board: React.FC<any> = (props) => {
   const loseSound = new Audio(onLoseSound);
   const winSound = new Audio(winS);
   const song1 = new Audio(music1);
+  const [selectedCell, setSelectedCell] = useState([0, 0]);
+
   const [timer, startTimer, stopTimer] = useStateAndLSForTimer();
   const [state, setState] = useStateAndLS(
     {
@@ -31,6 +33,7 @@ const Board: React.FC<any> = (props) => {
     'bugsweeper-save',
   );
   const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
+
   useEffect(() => {
     // чтобы не плодить сущности проверяю морду, если она не дефолтная - игра чем то закончилась и таймер пускать заново не надо
     if (button === '🙂') {
@@ -47,15 +50,63 @@ const Board: React.FC<any> = (props) => {
       },
       false,
     );
+
     if (props.audioVolume.music) {
       song1.volume = props.audioVolume.music;
       song1.play();
     }
     return function cleanup() {
+      song1.removeEventListener(
+        'ended',
+        function() {
+          this.currentTime = 0;
+          if (props.audioVolume.music) {
+            this.play();
+          }
+        },
+        false,
+      );
       song1.pause();
       stopTimer();
     };
   }, []);
+
+  useEffect(
+    () => {
+      const keyboardHandler = (e: KeyboardEvent) => {
+        const { key } = e;
+
+        if (key === 'ArrowDown') {
+          setSelectedCell((prevState) => {
+            return [(prevState[0] + 1) % props.rows, prevState[1]];
+          });
+        } else if (key === 'ArrowUp') {
+          setSelectedCell((prevState) => {
+            const x = (prevState[0] - 1) % props.rows;
+            return [x >= 0 ? x : props.rows - 1, prevState[1]];
+          });
+        } else if (key === 'ArrowLeft') {
+          setSelectedCell((prevState) => {
+            const y = (prevState[1] - 1) % props.columns;
+            return [prevState[0], y >= 0 ? y : props.columns - 1];
+          });
+        } else if (key === 'ArrowRight') {
+          setSelectedCell((prevState) => {
+            return [prevState[0], (prevState[1] + 1) % props.columns];
+          });
+        } else if (e.key === 'n') {
+          handleNewGame();
+        }
+      };
+
+      document.addEventListener('keydown', keyboardHandler);
+      return () => {
+        document.removeEventListener('keydown', keyboardHandler);
+        stopTimer();
+      };
+    },
+    [selectedCell],
+  );
 
   useEffect(
     () => {
@@ -108,20 +159,20 @@ const Board: React.FC<any> = (props) => {
   };
 
   const handleNewGame = () => {
-    startTimer(true);
-    setButton('🙂');
     setState({
       ...plantBugs(props.rows, props.columns, props.bugs),
       flagCounter: props.bugs,
     });
+    startTimer(true);
+    setButton('🙂');
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
     e.preventDefault();
-    rClickSound.volume = props.audioVolume.sound;
-    rClickSound.currentTime = 0;
-    rClickSound.play();
     if (!state.field[x][y].open && (state.flagCounter > 0 || state.field[x][y].flag)) {
+      rClickSound.volume = props.audioVolume.sound;
+      rClickSound.currentTime = 0;
+      rClickSound.play();
       const arr = [...state.field];
       const counter = arr[x][y].flag ? state.flagCounter + 1 : state.flagCounter - 1;
       arr[x][y].flag = !arr[x][y].flag;
@@ -146,9 +197,9 @@ const Board: React.FC<any> = (props) => {
     }
   };
 
-  const convertTime = (delta: number) => {
-    const sec = String(Math.floor((delta / 1000) % 60));
-    const min = String(Math.floor((delta / (1000 * 60)) % 60));
+  const convertTime = (s: number) => {
+    const min = String(Math.floor(s / 60));
+    const sec = String((s % 60).toFixed(0));
     return `${min.padStart(2, '0')}:${sec.padStart(2, '0')}`;
   };
 
@@ -189,6 +240,8 @@ const Board: React.FC<any> = (props) => {
                 return (
                   <Cell
                     key={`${x}-${y}`}
+                    selected={x === selectedCell[0] && y === selectedCell[1]}
+                    setSelected={() => setSelectedCell([x, y])}
                     cell={cell}
                     handleClick={(e) => handleClick(x, y, e)}
                     handleContextMenu={(e) => handleContextMenu(x, y, e)}

@@ -1,35 +1,33 @@
 import { useState } from 'react';
 
 export default (): [number, (arg0: boolean) => void, () => void] => {
-  const timerStart = localStorage.getItem('bugsweeper-timerStart');
   const timer = localStorage.getItem('bugsweeper-timer');
-  const [start, setStart] = useState(Number(timerStart) || 0);
-  const [id, setId]: any[] = useState(0);
+  const [ids, setId]: any[] = useState([]);
   const [value, setValue] = useState(Number(timer) || 0);
 
   const startTimer = (reset: boolean) => {
-    let s: number;
+    let counter = value;
     if (reset) {
-      clearInterval(id);
+      resetTimer();
+      counter = 0;
       setValue(0);
-      s = Date.now();
-      setStart(s);
-    } else {
-      s = start;
     }
 
-    localStorage.setItem('bugsweeper-timerStart', String(s));
-
     const intervalID = setInterval(() => {
-      const time = Date.now() - s;
-      setValue(Date.now() - s);
-      localStorage.setItem('bugsweeper-timer', String(time));
+      const timer = (counter += 1);
+      setValue(timer);
+      localStorage.setItem('bugsweeper-timer', String(timer));
     }, 1000);
-    setId(intervalID);
+    setId((ids: NodeJS.Timer[]) => {
+      ids.push(intervalID);
+      return ids;
+    });
   };
 
   const resetTimer = () => {
-    clearInterval(id);
+    ids.forEach((id: NodeJS.Timer) => {
+      return clearInterval(id);
+    });
   };
 
   return [value, startTimer, resetTimer];

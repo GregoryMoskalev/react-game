@@ -5,7 +5,9 @@ import './Cell.scss';
 
 interface CellProps {
   cell: TileProps;
+  selected: boolean;
   handleClick: (e: any) => void;
+  setSelected: () => void;
   handleContextMenu: (e: any) => void;
 }
 
@@ -28,9 +30,14 @@ const Cell: React.FC<CellProps> = (props) => {
   if (props.cell.open) {
     classList += 'Cell-open ';
     if (props.cell.value === 'B') {
-      classList += 'Cell-bomb';
+      classList += 'Cell-bomb ';
     }
   }
+
+  if (props.selected) {
+    classList += 'selected ';
+  }
+
   if (props.cell.value > 3) {
     classList += 'purple';
   } else if (props.cell.value === 3) {
@@ -57,6 +64,7 @@ const Cell: React.FC<CellProps> = (props) => {
       style={{ color: props.cell.open ? '' : 'transparent' }}
       className={classList}
       onClick={props.handleClick}
+      onMouseEnter={props.setSelected}
       onContextMenu={props.handleContextMenu}
     >
       {content}
