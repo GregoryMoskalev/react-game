@@ -116,9 +116,14 @@ const Board: React.FC<any> = (props) => {
     [state.flagCounter, state.field],
   );
 
+  const isGameEnded = () => {
+    return button === '💀' || button === '🥳';
+  };
+
   const onLose = () => {
+    if (isGameEnded()) return;
     if (props.audioVolume.sound) {
-      loseSound.volume = props.audioVolume.sound > 0.3 ? 0.3 : props.audioVolume.sound;
+      loseSound.volume = props.audioVolume.sound * 0.3;
       loseSound.play();
       stopTimer();
     }
@@ -130,11 +135,12 @@ const Board: React.FC<any> = (props) => {
 
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
-    let button = '🙂';
+    if (isGameEnded()) return;
+    let btn = '🙂';
     if (!state.field[x][y].flag) {
       if (state.field[x][y].value === 'B') {
         onLose();
-        button = '💀';
+        btn = '💀';
       } else if (!state.field[x][y].open) {
         if (props.audioVolume.sound) {
           clickSound.volume = props.audioVolume.sound;
@@ -152,7 +158,7 @@ const Board: React.FC<any> = (props) => {
       });
 
       setTimeout(() => {
-        setButton(button);
+        setButton(btn);
       }, 200);
     }
   };
@@ -168,6 +174,7 @@ const Board: React.FC<any> = (props) => {
 
   const handleContextMenu = (x: number, y: number, e: any) => {
     e.preventDefault();
+    if (isGameEnded()) return;
     if (!state.field[x][y].open && (state.flagCounter > 0 || state.field[x][y].flag)) {
       rClickSound.volume = props.audioVolume.sound;
       rClickSound.currentTime = 0;
