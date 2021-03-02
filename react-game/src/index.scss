@@ -13,12 +13,6 @@ html {
   font-family: 'Roboto Mono', monospace;
 }
 
-@media screen and (max-width: 1020px) {
-  html {
-    font-size: 50%;
-  }
-}
-
 body {
   height: 100%;
   display: flex;
@@ -29,6 +23,7 @@ body {
   background-color: $color-primary;
   font-size: 1.6rem;
   letter-spacing: .1rem;
+  overflow: auto;
 
   &:fullscreen {
     background-color: $color-primary !important;
@@ -59,4 +54,25 @@ a {
 .heading {
   font-weight: 300;
   letter-spacing: .2rem;
+}
+
+@media screen and (max-width: 1020px) {
+  html {
+    font-size: 50%;
+  }
+  .h-1 {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-height: 820px) {
+  html {
+    font-size: 50%;
+  }
+  .h-1 {
+    font-size: 15px;
+  }
+  body {
+    height: auto;
+  }
 }
