@@ -102,7 +102,6 @@ const Board: React.FC<any> = (props) => {
       document.addEventListener('keydown', keyboardHandler);
       return () => {
         document.removeEventListener('keydown', keyboardHandler);
-        stopTimer();
       };
     },
     [selectedCell],
