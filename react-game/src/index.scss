@@ -19,7 +19,6 @@ html {
 }
 
 body {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,8 +27,7 @@ body {
   background-color: $color-primary;
   font-size: 1.6rem;
   letter-spacing: .1rem;
-  overflow: auto;
-
+  margin-bottom: 4rem;
   &:fullscreen {
     background-color: $color-primary !important;
   }

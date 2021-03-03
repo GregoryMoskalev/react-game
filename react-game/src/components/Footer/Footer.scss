@@ -1,15 +1,9 @@
 .Footer {
-  position: absolute;
+  position: fixed;
+  height: 3rem;
   bottom: 0;
   margin-bottom: 1rem;
 }
 .rs-logo {
   height: 2rem;
-}
-
-@media screen and (max-height: 1020px) {
-  .Footer {
-    position: inherit;
-    margin-top: 10rem;
-  }
 }

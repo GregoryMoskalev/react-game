@@ -177,6 +177,12 @@
   margin: 3rem auto;
 }
 
+@media screen and (max-height: 1200px) {
+  .switch {
+    margin: .5rem auto;
+  }
+}
+
 /* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
