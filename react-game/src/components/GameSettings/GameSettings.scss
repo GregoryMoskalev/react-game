@@ -102,6 +102,35 @@
   display: flex;
   flex-direction: column;
   margin: 1.2rem;
+  & label {
+    margin-bottom: 1rem;
+  }
+}
+
+#sound,
+#music {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 1rem;
+  margin: 1rem;
+  border-radius: .5rem;
+  background: $color-grey;
+  outline: none;
+  padding: 0;
+  margin: 0;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: #3fc1c9;
+    cursor: pointer;
+    transition: background .15s ease-in-out;
+    &:hover {
+      background: #3fc1c9;
+    }
+  }
 }
 
 .play-btn {
@@ -150,7 +179,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: $color-grey;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -168,11 +197,11 @@
 }
 
 input:checked + .slider {
-  background-color: #ccc;
+  background-color: $color-grey;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #ccc;
+  box-shadow: 0 0 1px $color-grey;
 }
 
 input:checked + .slider:before {
