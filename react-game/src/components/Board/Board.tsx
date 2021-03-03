@@ -246,6 +246,7 @@ const Board: React.FC<any> = (props) => {
                 return (
                   <Cell
                     key={`${x}-${y}`}
+                    isExpert={props.bugs > 40}
                     selected={x === selectedCell[0] && y === selectedCell[1]}
                     setSelected={() => setSelectedCell([x, y])}
                     cell={cell}

@@ -6,6 +6,7 @@ import './Cell.scss';
 interface CellProps {
   cell: TileProps;
   selected: boolean;
+  isExpert: boolean;
   handleClick: (e: any) => void;
   setSelected: () => void;
   handleContextMenu: (e: any) => void;
@@ -36,6 +37,10 @@ const Cell: React.FC<CellProps> = (props) => {
 
   if (props.selected) {
     classList += 'selected ';
+  }
+
+  if (props.isExpert) {
+    classList += 'expert ';
   }
 
   if (props.cell.value > 3) {

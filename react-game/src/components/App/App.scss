@@ -3,4 +3,11 @@
   flex-direction: column;
   text-align: center;
   align-items: center;
+  margin-top: 10rem;
+}
+
+@media screen and (max-height: 1200px) {
+  .App {
+    margin-top: 4rem;
+  }
 }
