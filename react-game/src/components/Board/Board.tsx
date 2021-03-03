@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import Cell, { Flag } from '../Cell/Cell';
 import { cellStr, createBugNumMatrix } from '../../utils/utils';
 import boardActions from '../../store/boardActions';
+import Timer from './Timer';
 import './Board.scss';
 
 // features to implement:
 // * emoji for mouseDown
 // * bulk open (left+right click on digit)
 // * make it impossible to fail at the first open?
-// * timer
 // * more typescript
 
 const toggleFullScreen = () => {
@@ -24,7 +24,6 @@ const toggleFullScreen = () => {
 const Board: React.FC<any> = (props) => {
   const {onNewGame, onFlag, onOpen} = props;
   const {field, bang, win} = props;
-  const timer = '00:00';
   const button = bang ? '💀' : win ? '😎' : '🙂';
   const flagCounter = field.bugs.length - field.flags.length;
 
@@ -67,7 +66,7 @@ const Board: React.FC<any> = (props) => {
       </button>
       <div className="Board-controls">
         <div className="Board-stats">
-          <div className="Board-timer">{timer}</div>
+          <Timer tick={!win && !bang && field.opened.length > 0} start={props.startedAt}/>
           <button className="NewGame" onClick={onNewGame}>
             {button}
           </button>
@@ -94,5 +93,6 @@ const mapStateToProps = (state: any) => ({
   field: state.board.field,
   bang: state.board.bang,
   win: state.board.win,
+  startedAt: state.board.startedAt,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

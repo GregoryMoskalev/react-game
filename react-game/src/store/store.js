@@ -18,6 +18,7 @@ const initialState = {
   board: {
     bang: false,
     win: false,
+    startedAt: null,
     field: {
       rows: 9,
       columns: 9,
@@ -43,6 +44,9 @@ function handleOpen(boardState, {row, col}) {
       opened: newOpened
     }
   };
+  if (field.opened.length === 0) {
+    newBoard.startedAt = Date.now();
+  }
   if (field.bugs.includes(toOpen)) {
     newBoard.bang = true;
   } else {

@@ -63,3 +63,11 @@ export const createBugNumMatrix = (rows: number, columns: number, bugs: string[]
   })
   return result;
 }
+
+const padTimer = (num: number) => num > 9 ? (num + '') : ('0' + num);
+
+export const formatTimer = (seconds: number) => {
+  const ss = padTimer(seconds % 60);
+  const mm = padTimer(Math.round(seconds / 60))
+  return mm + ':' + ss;
+}
