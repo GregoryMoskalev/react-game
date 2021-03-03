@@ -7,8 +7,6 @@ import boardActions from '../../store/boardActions';
 import './Board.scss';
 
 // features to implement:
-// * sound effects
-// * music
 // * emoji for mouseDown
 // * bulk open (left+right click on digit)
 // * make it impossible to fail at the first open?

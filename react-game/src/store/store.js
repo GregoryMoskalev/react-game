@@ -11,7 +11,7 @@ const initialState = {
   settings: {
     audioVolume: {
       sound: 0.3,
-      music: .05,
+      music: 0,
     },
     difficulty: 'junior'
   },

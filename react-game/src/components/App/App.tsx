@@ -4,6 +4,7 @@ import GameSettings from '../GameSettings/GameSettings';
 import Board from '../Board/Board';
 import Footer from '../Footer/Footer';
 import './App.scss';
+import SoundEffects from "../SoundEffects";
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Route exact path="/settings" component={GameSettings} />
       </Switch>
       <Footer />
+      <SoundEffects />
     </div>
   );
 };
