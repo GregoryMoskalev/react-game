@@ -1,0 +1,39 @@
+@import '../../styles/variables';
+
+.score-heading {
+  letter-spacing: 1px;
+  font-weight: 400;
+  margin-bottom: .4rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 3rem;
+
+  span {
+    padding: 8px 4px;
+  }
+}
+
+.back-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 14.4rem;
+  height: 4.2rem;
+  margin: 0 auto;
+  border-radius: 4px;
+  color: $color-primary-dark-2;
+  font-weight: 500;
+  background-color: $color-warning;
+  transition: all .3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    transform: translateY(2px);
+  }
+}

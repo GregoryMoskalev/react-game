@@ -1,0 +1,129 @@
+@import '../../styles/variables';
+.Board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  &-stats {
+    display: flex;
+    width: 25%;
+    flex-direction: row;
+    flex-grow: 2;
+    align-items: center;
+    justify-content: space-around;
+  }
+  &-timer {
+    font-size: 2.8rem;
+  }
+  &-controls {
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  &-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.fullscreen-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: transparent;
+  border: none;
+  color: #eee;
+
+  cursor: pointer;
+}
+
+.flag-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & .counter {
+    display: block;
+    margin-left: .5rem;
+    font-size: 2.4rem;
+  }
+}
+
+.keybinds {
+  margin-top: 2rem;
+
+  & h4 {
+    font-weight: 400;
+    letter-spacing: .2rem;
+    margin-bottom: .4rem;
+    text-decoration: underline;
+  }
+
+  &-list {
+    list-style-type: none;
+  }
+}
+
+.NewGame {
+  display: flex;
+  justify-self: center;
+  width: 5rem;
+  height: 5rem;
+  margin-left: 1rem;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.8rem;
+  background-color: $color-primary-light-1;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: box-shadow .3s ease, background-color .3s ease, transform .3s ease;
+
+  &:hover {
+    font-size: 0;
+    background-color: $color-primary-light-2;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
+    &::before {
+      font-size: 2.8rem;
+      content: '😊';
+    }
+  }
+  &:active {
+    font-size: 0;
+    background-color: $color-primary-dark-2;
+    transform: translateY(2px);
+    &::before {
+      font-size: 0;
+    }
+    &::after {
+      font-size: 2.8rem;
+      content: '😉';
+    }
+  }
+}
+
+.settings-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 4.2rem;
+  height: 4.2rem;
+  color: #eee;
+  font-size: 2.8rem;
+  transition: all .2s ease;
+  &:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+  &:active {
+    transform: translateY(2px);
+  }
+}

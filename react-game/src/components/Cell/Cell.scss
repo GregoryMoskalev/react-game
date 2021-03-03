@@ -1,0 +1,87 @@
+@import '../../styles/variables';
+
+.Cell {
+  display: flex;
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $color-primary;
+  border-radius: 2px;
+  background-color: $color-primary-dark-2;
+  transition: translate .3s ease, background-color .3s ease;
+  overflow: hidden;
+  &.expert {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.5rem;
+
+    & .Bug,
+    & .Flag {
+      font-size: 1.5rem;
+    }
+  }
+
+  & .Bug,
+  & .Flag {
+    width: 100%;
+    height: 100%;
+  }
+
+  & .Bug {
+    padding-top: .2rem;
+    font-size: 2.4rem;
+  }
+
+  &:hover:not(.Cell-open) {
+    cursor: pointer;
+  }
+
+  &:active:not(.Cell-open) {
+    transform: translateY(1px);
+    border: 1px solid $color-primary-light-2;
+    background-color: $color-primary-dark-1;
+    cursor: pointer;
+  }
+
+  & img {
+    opacity: 0;
+  }
+  &.Cell-open {
+    background-color: $color-primary-light-1;
+    & div {
+      opacity: 1;
+      color: #eee;
+    }
+  }
+  &.Cell-bomb {
+    background-color: $color-primary-light-1;
+  }
+  &.blue {
+    color: $color-blue;
+  }
+  &.green {
+    color: $color-green;
+  }
+  &.red {
+    color: $color-red;
+  }
+  &.purple {
+    color: $color-purple;
+  }
+}
+
+.Flag {
+  opacity: 1;
+  color: $color-warning;
+  font-size: 2.8rem;
+}
+
+.selected {
+  border: 1px solid $color-blue;
+
+  &:not(.Cell-open) {
+    transform: translateY(-1px);
+    background-color: $color-primary-dark-1;
+  }
+}

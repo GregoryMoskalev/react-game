@@ -1,0 +1,81 @@
+@import 'styles/variables';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%; // 10px/16px = 62.5% => 1rem = 10px
+  font-family: 'Roboto Mono', monospace;
+
+  &:fullscreen {
+    font-size: 100%;
+  }
+  &:fullscreen .h-1 {
+    display: none;
+  }
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #eee;
+  background-color: $color-primary;
+  font-size: 1.6rem;
+  letter-spacing: .1rem;
+  margin-bottom: 4rem;
+  &:fullscreen {
+    background-color: $color-primary !important;
+  }
+}
+
+a,
+button {
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: 2px solid orange;
+  }
+}
+
+a {
+  color: #eee;
+  text-decoration: none;
+}
+
+.h-1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 1rem;
+}
+.heading {
+  font-weight: 300;
+  letter-spacing: .2rem;
+}
+
+@media screen and (max-width: 1020px) {
+  html {
+    font-size: 50%;
+  }
+  .h-1 {
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-height: 820px) {
+  html {
+    font-size: 50%;
+  }
+  .h-1 {
+    font-size: 15px;
+  }
+  body {
+    height: auto;
+  }
+}
