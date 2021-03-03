@@ -16,4 +16,7 @@ export default {
   keybindLeft: 'Left - Arrow Left ⬅',
   keybindRight: 'right - Arrow Right ➡',
   keybindNewGame: 'New Game - N',
+  score: 'Score',
+  time: 'Time',
+  back: 'Back',
 };

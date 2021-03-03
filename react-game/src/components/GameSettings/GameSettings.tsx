@@ -145,6 +145,9 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         />
         <span className="slider round material-icons" />
       </label>
+      <Link className="score-btn" to="/score">
+        {languages[langContext!.lang].score}
+      </Link>
       <Link className="play-btn" to="/">
         {languages[langContext!.lang].playBtn}
       </Link>

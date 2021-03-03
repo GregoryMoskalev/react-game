@@ -16,4 +16,7 @@ export default {
   keybindLeft: 'Влево - Стрелка Влево ⬅',
   keybindRight: 'Вправо - Стрелка Вправо ➡',
   keybindNewGame: 'Новая Игра - N',
+  score: 'Рекорды',
+  time: 'Время',
+  back: 'Назад',
 };

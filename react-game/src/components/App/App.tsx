@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import GameSettings from '../GameSettings/GameSettings';
 import Board from '../Board/Board';
 import Footer from '../Footer/Footer';
+import Score from '../Score/Score';
 import useStateAndLS from '../../hooks/useStateAndLS';
 import { LanguageProvider } from '../../contexts/LanguageContext';
 import { MineProvider } from '../../contexts/MineThemeContext';
@@ -85,6 +86,7 @@ const App: React.FC = () => {
                 />
               )}
             />
+            <Route exact path="/score" component={Score} />
           </Switch>
           <Footer />
         </div>

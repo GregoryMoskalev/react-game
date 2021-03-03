@@ -200,7 +200,25 @@ const Board: React.FC<any> = (props) => {
       winSound.play();
       setButton('🥳');
       stopTimer();
+      setScore();
     }
+  };
+
+  const setScore = () => {
+    const difficulty =
+      props.bugs === 99
+        ? `${languages[langContext!.lang].expertDifficulty}`
+        : props.bugs === 40
+          ? `${languages[langContext!.lang].mediumDifficulty}`
+          : `${languages[langContext!.lang].easyDifficulty}`;
+    let scoreList = JSON.parse(localStorage.getItem('bugsweeper-score-list')!) || [];
+    scoreList.push({ difficulty, timer });
+    scoreList.sort((a: { timer: number }, b: { timer: number }) => {
+      return a.timer - b.timer;
+    });
+    scoreList = scoreList.slice(0, 10);
+
+    localStorage.setItem('bugsweeper-score-list', JSON.stringify(scoreList));
   };
 
   const convertTime = (s: number) => {
