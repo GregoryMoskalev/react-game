@@ -88,8 +88,6 @@ const Board: React.FC<any> = (props) => {
 
 const mapDispatchToProps = boardActions;
 const mapStateToProps = (state: any) => ({
-  audioVolume: state.settings.audioVolume,
-  difficulty: state.settings.difficulty,
   field: state.board.field,
   bang: state.board.bang,
   win: state.board.win,

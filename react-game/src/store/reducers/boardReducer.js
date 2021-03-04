@@ -92,10 +92,10 @@ function handleFlag(boardState, {row, col}) {
   }
 }
 
-function handleNewGame(state, {seed}) {
+function handleNewGame(state, {seed, difficulty}) {
   return {
     ...initialState,
-    field: randomField(state.settings.difficulty, seed) // bang! need to peek into other reducer's state
+    field: randomField(difficulty, seed)
   };
 }
 
