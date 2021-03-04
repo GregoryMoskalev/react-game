@@ -23,7 +23,7 @@ const toggleFullScreen = () => {
 
 const Board: React.FC<any> = (props) => {
   const {onNewGame, onFlag, onOpen} = props;
-  const {field, bang, win} = props;
+  const {field, bang, win, startedAt} = props;
   const button = bang ? '💀' : win ? '😎' : '🙂';
   const flagCounter = field.bugs.length - field.flags.length;
 
@@ -66,7 +66,7 @@ const Board: React.FC<any> = (props) => {
       </button>
       <div className="Board-controls">
         <div className="Board-stats">
-          <Timer tick={!win && !bang && field.opened.length > 0} start={props.startedAt}/>
+          <Timer tick={!win && !bang && field.opened.length > 0} start={startedAt}/>
           <button className="NewGame" onClick={onNewGame}>
             {button}
           </button>
