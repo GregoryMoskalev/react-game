@@ -1,5 +1,6 @@
 import {createStore} from 'redux';
 import {cellStr, expandIfEmpty} from '../utils/utils'
+import seedrandom from 'seedrandom';
 
 const difficulties = {
   junior: {rows: 9, columns: 9, bugs: 10},
@@ -18,7 +19,7 @@ const initialState = {
   board: {
     bang: false,
     win: false,
-    startedAt: null,
+    startedAt: Date.now(),
     field: {
       rows: 9,
       columns: 9,
@@ -29,7 +30,7 @@ const initialState = {
   },
 }
 
-function handleOpen(boardState, {row, col}) {
+function handleOpen(boardState, {row, col, timestamp}) {
   const {field} = boardState;
   const toOpen = cellStr(row, col);
   if (field.opened.includes(toOpen) || field.flags.includes(toOpen)) {
@@ -45,7 +46,7 @@ function handleOpen(boardState, {row, col}) {
     }
   };
   if (field.opened.length === 0) {
-    newBoard.startedAt = Date.now();
+    newBoard.startedAt = timestamp;
   }
   if (field.bugs.includes(toOpen)) {
     newBoard.bang = true;
@@ -85,12 +86,13 @@ function handleFlag(boardState, {row, col}) {
   }
 }
 
-function randomField(difficulty) {
+function randomField(difficulty, seed) {
+  const rnd = seedrandom(seed);
   const {rows, columns, bugs} = difficulties[difficulty] || difficulties.junior;
   const bugSet = new Set();
 
   function randomInt(lessThan) {
-    return Math.floor(Math.random() * lessThan);
+    return Math.floor(rnd.quick() * lessThan);
   }
 
   while (bugSet.size < bugs) {
@@ -137,7 +139,7 @@ const reducer = (state, action) => {
         ...state,
         board: {
           ...initialState.board,
-          field: randomField(state.settings.difficulty)
+          field: randomField(state.settings.difficulty, action.payload.seed)
         }
       }
     default:
