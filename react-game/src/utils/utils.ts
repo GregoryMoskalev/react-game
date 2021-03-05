@@ -1,92 +1,73 @@
-export interface TileProps extends Record<string, string | boolean | number> {}
+export interface TileProps extends Record<string, string | boolean | number> {
+}
 
-type FieldOfBugs = TileProps[][];
-
-export const createMatrix = (x: number, y: number, fill: any) => {
-  return new Array(x).fill(0).map(() => new Array(y).fill(fill));
+export const cellStr = (row: number, col: number) => {
+  return `${row}x${col}`;
 };
 
-const isTileExist = (x: number, y: number, field: FieldOfBugs) => {
-  return x < field.length && x >= 0 && y < field[0].length && y >= 0;
-};
-const isTileNotABug = (x: number, y: number, field: FieldOfBugs) => {
-  return typeof field[x][y].value === 'number';
-};
+function other8(rowNum: number, colNum: number) {
+  return [
+    [rowNum - 1, colNum - 1],
+    [rowNum - 1, colNum    ],
+    [rowNum - 1, colNum + 1],
+    [rowNum,     colNum - 1],
+    [rowNum,     colNum + 1],
+    [rowNum + 1, colNum - 1],
+    [rowNum + 1, colNum    ],
+    [rowNum + 1, colNum + 1],
+  ];
+}
 
-const openTile = (x: number, y: number, field: FieldOfBugs) => {
-  if (
-    isTileExist(x, y, field) &&
-    isTileNotABug(x, y, field) &&
-    !field[x][y].open &&
-    !field[x][y].flag
-  ) {
-    field[x][y].open = true;
+export function adjacentCells(rows: number, columns: number, rowNum: number, colNum: number) {
+  return other8(rowNum, colNum).filter(([row, col]) => row >= 0 && col >= 0 && row < rows && col < columns);
+}
 
-    openEmptyTiles(x, y, field);
+export const expandIfEmpty = (field: any, row: number, col: number) => {
+  const bugMatrix = createBugNumMatrix(field.rows, field.columns, field.bugs);
+  if (bugMatrix[row][col]) {
+    return [];
   }
-  return field;
-};
 
-export const openEmptyTiles = (x: number, y: number, field: FieldOfBugs): FieldOfBugs => {
-  if (!field[x][y].value) {
-    openTile(x + 1, y, field);
-    openTile(x + 1, y + 1, field);
-    openTile(x + 1, y - 1, field);
-    openTile(x - 1, y, field);
-    openTile(x - 1, y - 1, field);
-    openTile(x - 1, y + 1, field);
-    openTile(x, y + 1, field);
-    openTile(x, y - 1, field);
+  const result: Set<String> = new Set();
+
+  function expand(row: number, col: number): void {
+    if (!bugMatrix[row] || typeof bugMatrix[row][col] != 'number') {
+      return; // out of the field
+    }
+
+    if (result.has(cellStr(row, col))) {
+      return;
+    }
+
+    result.add(cellStr(row, col));
+
+    if (bugMatrix[row][col] !== 0) {
+      return;
+    }
+
+    other8(row, col).forEach(([adjRow, adjCol]) => expand(adjRow, adjCol))
   }
-  return field;
-};
 
-const addProperties = (matrix: number[][], propsObj = { value: 0, open: false, flag: false }) => {
-  return matrix.map((arr) => {
-    return arr.map((e) => {
-      return { ...propsObj };
-    });
-  });
-};
+  expand(row, col);
+  return result;
+}
 
-const randomInteger = (max: number): number => {
-  return Math.floor(Math.random() * Math.floor(max));
-};
+export const createBugNumMatrix = (rows: number, columns: number, bugs: string[]) => {
+  const result: number[][] = new Array(rows).fill(0).map(() => new Array(columns).fill(0));
+  bugs.forEach(bug => {
+    const [bugRow, bugCol] = bug.split('x');
+    const nextToBug = adjacentCells(rows, columns, Number(bugRow), Number(bugCol));
+    nextToBug.forEach(([row, col]) => {
+      result[row][col]++
+    })
+  })
+  return result;
+}
 
-export const createRandomListOfCoordinats = (n: number, maxX: number, maxY: number): number[][] => {
-  const list = new Set();
-  while (list.size < n) {
-    list.add(`${randomInteger(maxX)}-${randomInteger(maxY)}`);
-  }
-  const arr = Array.from(list) as string[];
+const padTimer = (num: number) => num > 9 ? (num + '') : ('0' + num);
 
-  return arr.map((s) => s.split('-').map((e) => Number(e))); // spreading cause a TS warning
-};
-
-const bugCounter = (x: number, y: number, arr: FieldOfBugs): void => {
-  if (isTileExist(x, y, arr) && isTileNotABug(x, y, arr)) {
-    arr[x][y].value = Number(arr[x][y].value) + 1;
-  }
-};
-
-export const plantBugs = (
-  rows: number,
-  columns: number,
-  bugs: number,
-): { field: FieldOfBugs; listOfBugs: number[][] } => {
-  const field: FieldOfBugs = addProperties(createMatrix(rows, columns, 0));
-  const listOfBugs = createRandomListOfCoordinats(bugs, rows, columns);
-  listOfBugs.forEach((c: number[]) => {
-    const [x, y] = c;
-    field[x][y].value = 'B';
-    bugCounter(x + 1, y, field);
-    bugCounter(x + 1, y + 1, field);
-    bugCounter(x + 1, y - 1, field);
-    bugCounter(x - 1, y, field);
-    bugCounter(x - 1, y - 1, field);
-    bugCounter(x - 1, y + 1, field);
-    bugCounter(x, y + 1, field);
-    bugCounter(x, y - 1, field);
-  });
-  return { field, listOfBugs };
-};
+export const formatTimer = (seconds: number) => {
+  const ss = padTimer(seconds % 60);
+  const mm = padTimer(Math.round(seconds / 60))
+  return mm + ':' + ss;
+}
