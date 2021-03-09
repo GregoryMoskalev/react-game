@@ -1,5 +1,5 @@
-import {cellStr, expandIfEmpty} from "../../utils/utils";
 import seedrandom from "seedrandom";
+import {cellStr, expandIfEmpty} from "../../commons/gameLogic";
 
 const difficulties = {
   junior: {rows: 9, columns: 9, bugs: 10},
@@ -14,9 +14,9 @@ const initialState = {
   field: {
     rows: 9,
     columns: 9,
-    bugs: ['0x0', '1x1'],
-    opened: ['8x8'],
-    flags: ['0x0'],
+    bugs: [],
+    opened: [],
+    flags: [],
   },
 };
 

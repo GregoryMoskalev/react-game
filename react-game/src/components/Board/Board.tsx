@@ -2,16 +2,10 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Cell, { Flag } from '../Cell/Cell';
-import { cellStr, createBugNumMatrix } from '../../utils/utils';
 import boardActions from '../../store/boardActions';
 import Timer from './Timer';
 import './Board.scss';
-
-// features to implement:
-// * emoji for mouseDown
-// * bulk open (left+right click on digit)
-// * make it impossible to fail at the first open?
-// * more typescript
+import { cellStr, createBugNumMatrix, TileProps } from "../../commons/gameLogic";
 
 const toggleFullScreen = () => {
   if (!document.fullscreenElement) {
@@ -39,7 +33,7 @@ const Board: React.FC<any> = (props) => {
         const open = field.opened.includes(cellId);
         const flag = field.flags.includes(cellId);
         const bug = field.bugs.includes(cellId);
-        const cellObj = {
+        const cellObj: TileProps = {
           open: open || bang || win,
           flag: flag || (bug && win),
           value: bug ? 'B' : bugsAround
