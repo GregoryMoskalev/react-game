@@ -4,17 +4,28 @@ export interface TileProps {
   value: number | string
 }
 
+export interface GameField {
+  rows: number,
+  columns: number,
+  bugs: string[],
+  flags: string[],
+  opened: string[],
+}
+
 export const cellStr = (row: number, col: number) => {
   return `${row}x${col}`;
 };
 
-export const expandIfEmpty = (field: any, row: number, col: number) => {
+export const expandIfEmpty = (field: GameField, row: number, col: number): Set<string> => {
+  if (field.bugs.includes(cellStr(row, col))) {
+    return new Set();
+  }
   const bugMatrix = createBugNumMatrix(field.rows, field.columns, field.bugs);
   if (bugMatrix[row][col]) {
-    return [];
+    return new Set();
   }
 
-  const result: Set<String> = new Set();
+  const result: Set<string> = new Set();
 
   function expand(row: number, col: number): void {
     if (!bugMatrix[row] || typeof bugMatrix[row][col] != 'number') {
