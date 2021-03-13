@@ -92,9 +92,8 @@ const GameSettings: React.FC<DispatchProps & StateProps> = (props) => {
           />
         </div>
       </div>
-      <Link className="play-btn" to="/">
-        Play
-      </Link>
+      <Link className="score-btn" to="/score">Score</Link>
+      <Link className="play-btn" to="/">Play</Link>
     </React.Fragment>
   );
 };
