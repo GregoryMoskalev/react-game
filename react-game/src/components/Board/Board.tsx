@@ -15,7 +15,7 @@ const toggleFullScreen = () => {
   }
 };
 
-const Board: React.FC<any> = (props) => {
+export const Board: React.FC<any> = (props) => {
   const {onNewGame, onFlag, onOpen} = props;
   const {field, bang, win, startedAt} = props;
   const button = bang ? '💀' : win ? '😎' : '🙂';
