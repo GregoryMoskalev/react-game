@@ -2,12 +2,16 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import reducer from './reducers'
 import ReduxThunk from 'redux-thunk'
 
-const preloadedState = localStorage.reduxState ? JSON.parse(localStorage.reduxState) : null;
+let composeEnhancers = compose;
+if (window) {
+  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || composeEnhancers;
+}
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(reducer, preloadedState, composeEnhancers(applyMiddleware(ReduxThunk)));
-
-store.subscribe(() => localStorage.reduxState = JSON.stringify(store.getState()));
-
-export default store;
+export default function(useLocalStorage) {
+  const preloadedState = useLocalStorage && localStorage.reduxState ? JSON.parse(localStorage.reduxState) : undefined;
+  const store = createStore(reducer, preloadedState, composeEnhancers(applyMiddleware(ReduxThunk)));
+  if (useLocalStorage) {
+    store.subscribe(() => localStorage.reduxState = JSON.stringify(store.getState()));
+  }
+  return store;
+};

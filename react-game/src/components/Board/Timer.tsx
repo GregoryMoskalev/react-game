@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { formatTimer } from "../../utils/utils";
 
 interface TimerProps {
   start: number,
   tick: boolean,
+}
+
+const padTimer = (num: number) => num > 9 ? (num + '') : ('0' + num);
+
+const formatTimer = (seconds: number) => {
+  const ss = padTimer(seconds % 60);
+  const mm = padTimer(Math.round(seconds / 60))
+  return mm + ':' + ss;
 }
 
 const Timer: React.FC<TimerProps> = ({start, tick}) => {

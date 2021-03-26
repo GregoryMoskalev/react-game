@@ -1,0 +1,66 @@
+@import '../../styles/variables';
+
+.score-heading {
+  letter-spacing: 1px;
+  font-weight: 400;
+  margin-bottom: .4rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 3rem;
+
+  span {
+    padding: 8px 4px;
+  }
+}
+
+.back-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 14.4rem;
+  height: 4.2rem;
+  margin: 0 auto;
+  border-radius: 4px;
+  color: $color-primary-dark-2;
+  font-weight: 500;
+  background-color: $color-warning;
+  transition: all .3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  }
+  &:active {
+    transform: translateY(2px);
+  }
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 2px;
+  border-radius: 50%;
+  border: 2px solid;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

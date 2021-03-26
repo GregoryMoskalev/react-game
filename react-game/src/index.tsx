@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-// @ts-ignore
-import store from './store/store';
+import createStore from './store/store';
 import { BrowserRouter } from 'react-router-dom';
 import './index.scss';
 import App from './components/App/App';
@@ -10,7 +9,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={createStore(true)}>
       <BrowserRouter>
         <App/>
       </BrowserRouter>

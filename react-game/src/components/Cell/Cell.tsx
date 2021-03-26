@@ -1,6 +1,6 @@
 import React from 'react';
-import { TileProps } from '../../utils/utils';
 import './Cell.scss';
+import { TileProps } from "../../commons/gameLogic";
 
 interface CellProps {
   cell: TileProps;
@@ -12,7 +12,7 @@ const Bug: React.FC<{ open: boolean | string | number }> = (props) => {
   return <div className={props.open ? 'material-icons Bug' : 'Bug'}>pest_control</div>;
 };
 
-export const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {
+export const Flag: React.FC<{ flag: boolean | string | number }> = () => {
   return <div className="Flag material-icons">warning_amber</div>;
 };
 

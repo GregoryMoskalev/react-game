@@ -1,34 +1,31 @@
-export interface TileProps extends Record<string, string | boolean | number> {
+export interface TileProps {
+  open: boolean
+  flag: boolean
+  value: number | string
+}
+
+export interface GameField {
+  rows: number,
+  columns: number,
+  bugs: string[],
+  flags: string[],
+  opened: string[],
 }
 
 export const cellStr = (row: number, col: number) => {
   return `${row}x${col}`;
 };
 
-function other8(rowNum: number, colNum: number) {
-  return [
-    [rowNum - 1, colNum - 1],
-    [rowNum - 1, colNum    ],
-    [rowNum - 1, colNum + 1],
-    [rowNum,     colNum - 1],
-    [rowNum,     colNum + 1],
-    [rowNum + 1, colNum - 1],
-    [rowNum + 1, colNum    ],
-    [rowNum + 1, colNum + 1],
-  ];
-}
-
-export function adjacentCells(rows: number, columns: number, rowNum: number, colNum: number) {
-  return other8(rowNum, colNum).filter(([row, col]) => row >= 0 && col >= 0 && row < rows && col < columns);
-}
-
-export const expandIfEmpty = (field: any, row: number, col: number) => {
+export const expandIfEmpty = (field: GameField, row: number, col: number): Set<string> => {
+  if (field.bugs.includes(cellStr(row, col))) {
+    return new Set();
+  }
   const bugMatrix = createBugNumMatrix(field.rows, field.columns, field.bugs);
   if (bugMatrix[row][col]) {
-    return [];
+    return new Set();
   }
 
-  const result: Set<String> = new Set();
+  const result: Set<string> = new Set();
 
   function expand(row: number, col: number): void {
     if (!bugMatrix[row] || typeof bugMatrix[row][col] != 'number') {
@@ -64,10 +61,19 @@ export const createBugNumMatrix = (rows: number, columns: number, bugs: string[]
   return result;
 }
 
-const padTimer = (num: number) => num > 9 ? (num + '') : ('0' + num);
+function other8(rowNum: number, colNum: number) {
+  return [
+    [rowNum - 1, colNum - 1],
+    [rowNum - 1, colNum    ],
+    [rowNum - 1, colNum + 1],
+    [rowNum,     colNum - 1],
+    [rowNum,     colNum + 1],
+    [rowNum + 1, colNum - 1],
+    [rowNum + 1, colNum    ],
+    [rowNum + 1, colNum + 1],
+  ];
+}
 
-export const formatTimer = (seconds: number) => {
-  const ss = padTimer(seconds % 60);
-  const mm = padTimer(Math.round(seconds / 60))
-  return mm + ':' + ss;
+function adjacentCells(rows: number, columns: number, rowNum: number, colNum: number) {
+  return other8(rowNum, colNum).filter(([row, col]) => row >= 0 && col >= 0 && row < rows && col < columns);
 }
