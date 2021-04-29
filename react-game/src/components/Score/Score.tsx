@@ -1,27 +1,31 @@
-import React, { Fragment, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { LanguageContext } from '../../contexts/LanguageContext';
-import languages from '../../languages/languages';
-import './Score.scss';
+import React, {Fragment} from "react";
+import {Link} from "react-router-dom";
+import Text from "../Text";
+
+import "./Score.scss";
 
 const Score: React.FC = () => {
-  const langContext = useContext(LanguageContext);
-  const scoreList = JSON.parse(localStorage.getItem('bugsweeper-score-list')!) || [];
-  const { difficulty, score, time, back } = languages[langContext!.lang];
+  const scoreList = JSON.parse(localStorage.getItem("bugsweeper-score-list")!) || [];
   return (
     <div className="score">
-      <h4 className="score-heading">{score}</h4>
+      <h4 className="score-heading">
+        <Text id="score" />
+      </h4>
       <div className="grid">
         <span className="score-heading">
           <strong>&nbsp;</strong>
         </span>
         <span>
-          <strong className="score-heading">{difficulty}</strong>
+          <strong className="score-heading">
+            <Text id="difficulty" />
+          </strong>
         </span>
         <span>
-          <strong className="score-heading">{time}</strong>
+          <strong className="score-heading">
+            <Text id="time" />
+          </strong>
         </span>
-        {scoreList.map((el: { timer: number; difficulty: string }, i: number) => {
+        {scoreList.map((el: {timer: number; difficulty: string}, i: number) => {
           return (
             <Fragment key={i}>
               <span>{i}</span>
@@ -32,7 +36,7 @@ const Score: React.FC = () => {
         })}
       </div>
       <Link className="back-btn" to="/settings">
-        {back}
+        <Text id="back" />
       </Link>
     </div>
   );

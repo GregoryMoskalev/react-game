@@ -1,10 +1,9 @@
-import React, { FormEvent, useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-
-import languages from '../../languages/languages';
-import { LanguageContext } from '../../contexts/LanguageContext';
-import { MineThemeContext } from '../../contexts/MineThemeContext';
-import './GameSettings.scss';
+import React, {useContext} from "react";
+import {Link} from "react-router-dom";
+import Text from "../Text";
+import {LanguageContext} from "../../contexts/LanguageContext";
+import {MineThemeContext} from "../../contexts/MineThemeContext";
+import "./GameSettings.scss";
 
 interface GameSettingsProps {
   audioVolume: {
@@ -24,10 +23,11 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
     <React.Fragment>
       <div
         className="radio-group difficulty"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          props.handleChange(Number(e.target.value))}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.handleChange(Number(e.target.value))}
       >
-        <h4 className="settings-heading">{languages[langContext!.lang].difficulty}</h4>
+        <h4 className="settings-heading">
+          <Text id="difficulty" />
+        </h4>
         <div className="radio-button">
           <input
             defaultChecked={props.bugs === 10}
@@ -38,7 +38,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             value="0"
           />
           <label className="radio-label easy" htmlFor="difficultyEasy">
-            {languages[langContext!.lang].easyDifficulty}
+            <Text id="easyDifficulty" />
           </label>
         </div>
         <div className="radio-button">
@@ -51,7 +51,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             value="1"
           />
           <label className="radio-label medium" htmlFor="difficultyMedium">
-            {languages[langContext!.lang].mediumDifficulty}
+            <Text id="mediumDifficulty" />
           </label>
         </div>
         <div className="radio-button">
@@ -64,18 +64,23 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
             value="2"
           />
           <label className="radio-label expert" htmlFor="difficultyExpert">
-            {languages[langContext!.lang].expertDifficulty}
+            <Text id="expertDifficulty" />
           </label>
         </div>
       </div>
       <div className="radio-group volume">
-        <h4 className="settings-heading">{languages[langContext!.lang].audioSettings}</h4>
+        <h4 className="settings-heading">
+          <Text id="audioSettings" />
+        </h4>
         <div
           className="sound-volume"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            props.handleVolumeChange(Number(e.target.value), props.audioVolume.music)}
+            props.handleVolumeChange(Number(e.target.value), props.audioVolume.music)
+          }
         >
-          <label htmlFor="sound">{languages[langContext!.lang].soundVolume}</label>
+          <label htmlFor="sound">
+            <Text id="soundVolume" />
+          </label>
           <input
             defaultValue={props.audioVolume.sound}
             type="range"
@@ -89,9 +94,12 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         <div
           className="music-volume"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            props.handleVolumeChange(props.audioVolume.sound, Number(e.target.value))}
+            props.handleVolumeChange(props.audioVolume.sound, Number(e.target.value))
+          }
         >
-          <label htmlFor="music">{languages[langContext!.lang].musicVolume}</label>
+          <label htmlFor="music">
+            <Text id="musicVolume" />
+          </label>
           <input
             defaultValue={props.audioVolume.music}
             type="range"
@@ -105,13 +113,14 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
       </div>
       <div
         className="radio-group language"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          langContext!.changeLang(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => langContext!.changeLang(e.target.value)}
       >
-        <h4 className="settings-heading">{languages[langContext!.lang].languageSettings}</h4>
+        <h4 className="settings-heading">
+          <Text id="languageSettings" />
+        </h4>
         <div className="radio-button">
           <input
-            defaultChecked={langContext!.lang === 'en'}
+            defaultChecked={langContext!.lang === "en"}
             className="radio-input"
             type="radio"
             id="langEn"
@@ -124,7 +133,7 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
         </div>
         <div className="radio-button">
           <input
-            defaultChecked={langContext!.lang === 'ru'}
+            defaultChecked={langContext!.lang === "ru"}
             className="radio-input"
             type="radio"
             id="langRu"
@@ -136,20 +145,18 @@ const GameSettings: React.FC<GameSettingsProps> = (props) => {
           </label>
         </div>
       </div>
-      <h4 className="settings-heading">{languages[langContext!.lang].mineTheme}</h4>
+      <h4 className="settings-heading">
+        <Text id="mineTheme" />
+      </h4>
       <label className="switch">
-        <input
-          defaultChecked={MineTheme.mine === 'bug'}
-          onChange={() => MineTheme.changeMineTheme()}
-          type="checkbox"
-        />
+        <input defaultChecked={MineTheme.mine === "bug"} onChange={() => MineTheme.changeMineTheme()} type="checkbox" />
         <span className="slider round material-icons" />
       </label>
       <Link className="score-btn" to="/score">
-        {languages[langContext!.lang].score}
+        <Text id="score" />
       </Link>
       <Link className="play-btn" to="/">
-        {languages[langContext!.lang].playBtn}
+        <Text id="playBtn" />
       </Link>
     </React.Fragment>
   );

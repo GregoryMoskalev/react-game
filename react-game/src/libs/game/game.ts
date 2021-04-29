@@ -1,13 +1,17 @@
 import {createRandomListOfCoordinats} from "../random";
 import {addProperties, createMatrix} from "../../utils";
-import {FieldOfBugs} from "./game.model";
+import {FieldOfBugs, TileProps} from "./game.model";
 
 const isTileExist = (x: number, y: number, field: FieldOfBugs) => {
   return x < field.length && x >= 0 && y < field[0].length && y >= 0;
 };
 
-export const openEmptyTiles = (x: number, y: number, field: FieldOfBugs): FieldOfBugs => {
-  if (!field[x][y].value) {
+const hasValueByCoords = (field: TileProps) => Boolean(field.value);
+
+export const openEmptyTiles = (x: number, y: number, field: FieldOfBugs): FieldOfBugs | undefined => {
+  if (hasValueByCoords(field[x][y])) {
+    return;
+  }
     openTile(x + 1, y, field);
     openTile(x + 1, y + 1, field);
     openTile(x + 1, y - 1, field);
@@ -16,7 +20,7 @@ export const openEmptyTiles = (x: number, y: number, field: FieldOfBugs): FieldO
     openTile(x - 1, y + 1, field);
     openTile(x, y + 1, field);
     openTile(x, y - 1, field);
-  }
+  
   return field;
 };
 

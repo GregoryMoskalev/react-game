@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { MineThemeContext } from '../../contexts/MineThemeContext';
-import { TileProps } from '../../libs/game';
-import './Cell.scss';
+import React, {useContext} from "react";
+import {MineThemeContext} from "../../contexts/MineThemeContext";
+import {TileProps} from "../../libs/game";
+import "./Cell.scss";
 
 interface CellProps {
   cell: TileProps;
@@ -12,49 +12,49 @@ interface CellProps {
   handleContextMenu: (e: any) => void;
 }
 
-const Bug: React.FC<{ open: boolean | string | number }> = (props) => {
+const Bug: React.FC<{open: boolean | string | number}> = (props) => {
   const MineTheme = useContext(MineThemeContext);
   return (
-    <div className={props.open ? 'material-icons Bug' : 'Bug'}>
-      {MineTheme.mine === 'bug' ? 'pest_control' : 'coronavirus'}
+    <div className={props.open ? "material-icons Bug" : "Bug"}>
+      {MineTheme.mine === "bug" ? "pest_control" : "coronavirus"}
     </div>
   );
 };
 
-export const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {
+export const Flag: React.FC<{flag: boolean | string | number}> = (props) => {
   return <div className="Flag material-icons">warning_amber</div>;
 };
 
 export const Cell: React.FC<CellProps> = (props) => {
-  let classList = 'Cell ';
-  let content: JSX.Element | string = '';
+  let classList = "Cell ";
+  let content: JSX.Element | string = "";
   if (props.cell.open) {
-    classList += 'Cell-open ';
-    if (props.cell.value === 'B') {
-      classList += 'Cell-bomb ';
+    classList += "Cell-open ";
+    if (props.cell.value === "B") {
+      classList += "Cell-bomb ";
     }
   }
 
   if (props.selected) {
-    classList += 'selected ';
+    classList += "selected ";
   }
 
   if (props.isExpert) {
-    classList += 'expert ';
+    classList += "expert ";
   }
 
   if (props.cell.value > 3) {
-    classList += 'purple';
+    classList += "purple";
   } else if (props.cell.value === 3) {
-    classList += 'red';
+    classList += "red";
   } else if (props.cell.value === 2) {
-    classList += 'green';
+    classList += "green";
   } else if (props.cell.value === 1) {
-    classList += 'blue';
+    classList += "blue";
   }
 
   if (props.cell.value) {
-    if (props.cell.value === 'B') {
+    if (props.cell.value === "B") {
       content = <Bug open={props.cell.open} />;
     } else {
       content = String(props.cell.value);
@@ -66,7 +66,7 @@ export const Cell: React.FC<CellProps> = (props) => {
 
   return (
     <div
-      style={{ color: props.cell.open ? '' : 'transparent' }}
+      style={{color: props.cell.open ? "" : "transparent"}}
       className={classList}
       onClick={props.handleClick}
       onMouseEnter={props.setSelected}
@@ -77,4 +77,4 @@ export const Cell: React.FC<CellProps> = (props) => {
   );
 };
 
-export default Cell;
+export default React.memo(Cell);

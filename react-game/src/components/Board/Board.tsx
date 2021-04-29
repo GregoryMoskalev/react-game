@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import languages from "../../languages/languages";
 import {LanguageContext} from "../../contexts/LanguageContext";
 import {Cell, Flag} from "../Cell";
+import Text from "../Text";
 import {plantBugs, openEmptyTiles} from "../../libs/game";
 import useStateAndLS from "../../hooks/useStateAndLS";
 import useStateAndLSForTimer from "../../hooks/useStateAndLSForTimer";
@@ -231,7 +232,9 @@ const Board: React.FC<any> = (props) => {
 
   return (
     <div className="Board">
-      <h1 className="heading h-1">{languages[langContext!.lang].heading}</h1>
+      <h1 className="heading h-1">
+        <Text id="heading" />
+      </h1>
       <button className="fullscreen-btn material-icons" onClick={toggleFullScreen}>
         fullscreen
       </button>
@@ -272,13 +275,25 @@ const Board: React.FC<any> = (props) => {
         })}
       </div>
       <div className="keybinds">
-        <h4>{languages[langContext!.lang].keybinds}</h4>
+        <h4>
+          <Text id="keybinds" />
+        </h4>
         <ul className="keybinds-list">
-          <li>{languages[langContext!.lang].keybindNewGame}</li>
-          <li>{languages[langContext!.lang].keybindUp}</li>
-          <li>{languages[langContext!.lang].keybindDown}</li>
-          <li>{languages[langContext!.lang].keybindLeft}</li>
-          <li>{languages[langContext!.lang].keybindRight}</li>
+          <li>
+            <Text id="keybindNewGame" />
+          </li>
+          <li>
+            <Text id="keybindUp" />
+          </li>
+          <li>
+            <Text id="keybindDown" />
+          </li>
+          <li>
+            <Text id="keybindLeft" />
+          </li>
+          <li>
+            <Text id="keybindRight" />
+          </li>
         </ul>
       </div>
     </div>
