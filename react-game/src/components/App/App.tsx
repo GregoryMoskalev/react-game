@@ -1,13 +1,19 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import GameSettings from '../GameSettings/GameSettings';
-import Board from '../Board/Board';
-import Footer from '../Footer/Footer';
-import Score from '../Score/Score';
-import useStateAndLS from '../../hooks/useStateAndLS';
-import { LanguageProvider } from '../../contexts/LanguageContext';
-import { MineProvider } from '../../contexts/MineThemeContext';
-import './App.scss';
+import React from "react";
+import {Route, Switch} from "react-router-dom";
+import GameSettings from "../GameSettings/GameSettings";
+import Board from "../Board/Board";
+import Footer from "../Footer/Footer";
+import Score from "../Score/Score";
+import useStateAndLS from "../../hooks/useStateAndLS";
+import {LanguageProvider} from "../../contexts/LanguageContext";
+import {MineProvider} from "../../contexts/MineThemeContext";
+import "./App.scss";
+
+enum Difficulty {
+  Easy = 0,
+  Normal = 1,
+  Hard = 2,
+}
 
 const changeDifficulty = (difficulty: number) => {
   const value = {
@@ -17,17 +23,17 @@ const changeDifficulty = (difficulty: number) => {
   };
 
   switch (difficulty) {
-    case 2:
+    case Difficulty.Hard:
       value.rows = 30;
       value.columns = 16;
       value.bugs = 99;
       break;
-    case 1:
+    case Difficulty.Normal:
       value.rows = 16;
       value.columns = 16;
       value.bugs = 40;
       break;
-    case 0:
+    case Difficulty.Easy:
       value.rows = 9;
       value.columns = 9;
       value.bugs = 10;
@@ -42,11 +48,11 @@ const App: React.FC = () => {
       sound: 0.5,
       music: 0,
     },
-    'bugsweeper-audio-volume',
+    "bugsweeper-audio-volume",
   );
-  const [difficulty, setDifficulty] = useStateAndLS(changeDifficulty(0), 'bugsweeper-difficulty');
+  const [difficulty, setDifficulty] = useStateAndLS(changeDifficulty(0), "bugsweeper-difficulty");
   const handleDifficultyChange = (n: number) => {
-    localStorage.removeItem('bugsweeper-save');
+    localStorage.removeItem("bugsweeper-save");
     setDifficulty(changeDifficulty(n));
   };
 
