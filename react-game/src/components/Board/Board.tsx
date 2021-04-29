@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect, useContext} from "react";
+import {Link} from "react-router-dom";
 
-import languages from '../../languages/languages';
-import { LanguageContext } from '../../contexts/LanguageContext';
-import Cell, { Flag } from '../Cell/Cell';
-import { plantBugs, openEmptyTiles } from '../../utils/utils';
-import useStateAndLS from '../../hooks/useStateAndLS';
-import useStateAndLSForTimer from '../../hooks/useStateAndLSForTimer';
-import './Board.scss';
+import languages from "../../languages/languages";
+import {LanguageContext} from "../../contexts/LanguageContext";
+import {Cell, Flag} from "../Cell";
+import {plantBugs, openEmptyTiles} from "../../libs/game";
+import useStateAndLS from "../../hooks/useStateAndLS";
+import useStateAndLSForTimer from "../../hooks/useStateAndLSForTimer";
+import "./Board.scss";
 //audio
-import popCatSound from '../../assets/pop_cat.mp3';
-import onLoseSound from '../../assets/Wilhelm_Scream.mp3';
-import winS from '../../assets/b146dc8d75d05f3.mp3';
-import rCSound from '../../assets/ffc89ff250028f8.mp3';
-import music1 from '../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3';
+import popCatSound from "../../assets/pop_cat.mp3";
+import onLoseSound from "../../assets/Wilhelm_Scream.mp3";
+import winS from "../../assets/b146dc8d75d05f3.mp3";
+import rCSound from "../../assets/ffc89ff250028f8.mp3";
+import music1 from "../../assets/brought-to-you-by-a-falling-bob-omb-by-0x10.mp3";
 
 const Board: React.FC<any> = (props) => {
   const langContext = useContext(LanguageContext);
@@ -30,19 +30,19 @@ const Board: React.FC<any> = (props) => {
       ...plantBugs(props.rows, props.columns, props.bugs),
       flagCounter: props.bugs,
     },
-    'bugsweeper-save',
+    "bugsweeper-save",
   );
-  const [button, setButton] = useStateAndLS('🙂', 'bugsweeper-btn');
+  const [button, setButton] = useStateAndLS("🙂", "bugsweeper-btn");
 
   useEffect(() => {
     // чтобы не плодить сущности проверяю морду, если она не дефолтная - игра чем то закончилась и таймер пускать заново не надо
-    if (button === '🙂') {
+    if (button === "🙂") {
       startTimer(false);
     }
 
     song1.addEventListener(
-      'ended',
-      function() {
+      "ended",
+      function () {
         this.currentTime = 0;
         if (props.audioVolume.music) {
           this.play();
@@ -57,8 +57,8 @@ const Board: React.FC<any> = (props) => {
     }
     return function cleanup() {
       song1.removeEventListener(
-        'ended',
-        function() {
+        "ended",
+        function () {
           this.currentTime = 0;
           if (props.audioVolume.music) {
             this.play();
@@ -71,53 +71,47 @@ const Board: React.FC<any> = (props) => {
     };
   }, []);
 
-  useEffect(
-    () => {
-      const keyboardHandler = (e: KeyboardEvent) => {
-        const { key } = e;
+  useEffect(() => {
+    const keyboardHandler = (e: KeyboardEvent) => {
+      const {key} = e;
 
-        if (key === 'ArrowDown') {
-          setSelectedCell((prevState) => {
-            return [(prevState[0] + 1) % props.rows, prevState[1]];
-          });
-        } else if (key === 'ArrowUp') {
-          setSelectedCell((prevState) => {
-            const x = (prevState[0] - 1) % props.rows;
-            return [x >= 0 ? x : props.rows - 1, prevState[1]];
-          });
-        } else if (key === 'ArrowLeft') {
-          setSelectedCell((prevState) => {
-            const y = (prevState[1] - 1) % props.columns;
-            return [prevState[0], y >= 0 ? y : props.columns - 1];
-          });
-        } else if (key === 'ArrowRight') {
-          setSelectedCell((prevState) => {
-            return [prevState[0], (prevState[1] + 1) % props.columns];
-          });
-        } else if (e.key === 'n') {
-          handleNewGame();
-        }
-      };
-
-      document.addEventListener('keydown', keyboardHandler);
-      return () => {
-        document.removeEventListener('keydown', keyboardHandler);
-      };
-    },
-    [selectedCell],
-  );
-
-  useEffect(
-    () => {
-      if (state.flagCounter === 0) {
-        checkWin();
+      if (key === "ArrowDown") {
+        setSelectedCell((prevState) => {
+          return [(prevState[0] + 1) % props.rows, prevState[1]];
+        });
+      } else if (key === "ArrowUp") {
+        setSelectedCell((prevState) => {
+          const x = (prevState[0] - 1) % props.rows;
+          return [x >= 0 ? x : props.rows - 1, prevState[1]];
+        });
+      } else if (key === "ArrowLeft") {
+        setSelectedCell((prevState) => {
+          const y = (prevState[1] - 1) % props.columns;
+          return [prevState[0], y >= 0 ? y : props.columns - 1];
+        });
+      } else if (key === "ArrowRight") {
+        setSelectedCell((prevState) => {
+          return [prevState[0], (prevState[1] + 1) % props.columns];
+        });
+      } else if (e.key === "n") {
+        handleNewGame();
       }
-    },
-    [state.flagCounter, state.field],
-  );
+    };
+
+    document.addEventListener("keydown", keyboardHandler);
+    return () => {
+      document.removeEventListener("keydown", keyboardHandler);
+    };
+  }, [selectedCell]);
+
+  useEffect(() => {
+    if (state.flagCounter === 0) {
+      checkWin();
+    }
+  }, [state.flagCounter, state.field]);
 
   const isGameEnded = () => {
-    return button === '💀' || button === '🥳';
+    return button === "💀" || button === "🥳";
   };
 
   const onLose = () => {
@@ -136,17 +130,17 @@ const Board: React.FC<any> = (props) => {
   const handleClick = (x: number, y: number, e: any) => {
     e.preventDefault();
     if (isGameEnded()) return;
-    let btn = '🙂';
+    let btn = "🙂";
     if (!state.field[x][y].flag) {
-      if (state.field[x][y].value === 'B') {
+      if (state.field[x][y].value === "B") {
         onLose();
-        btn = '💀';
+        btn = "💀";
       } else if (!state.field[x][y].open) {
         if (props.audioVolume.sound) {
           clickSound.volume = props.audioVolume.sound;
           clickSound.play();
         }
-        setButton('😯');
+        setButton("😯");
       }
       const arr = [...state.field];
       arr[x][y].open = true;
@@ -169,7 +163,7 @@ const Board: React.FC<any> = (props) => {
       flagCounter: props.bugs,
     });
     startTimer(true);
-    setButton('🙂');
+    setButton("🙂");
   };
 
   const handleContextMenu = (x: number, y: number, e: any) => {
@@ -198,7 +192,7 @@ const Board: React.FC<any> = (props) => {
       })
     ) {
       winSound.play();
-      setButton('🥳');
+      setButton("🥳");
       stopTimer();
       setScore();
     }
@@ -209,22 +203,22 @@ const Board: React.FC<any> = (props) => {
       props.bugs === 99
         ? `${languages[langContext!.lang].expertDifficulty}`
         : props.bugs === 40
-          ? `${languages[langContext!.lang].mediumDifficulty}`
-          : `${languages[langContext!.lang].easyDifficulty}`;
-    let scoreList = JSON.parse(localStorage.getItem('bugsweeper-score-list')!) || [];
-    scoreList.push({ difficulty, timer });
-    scoreList.sort((a: { timer: number }, b: { timer: number }) => {
+        ? `${languages[langContext!.lang].mediumDifficulty}`
+        : `${languages[langContext!.lang].easyDifficulty}`;
+    let scoreList = JSON.parse(localStorage.getItem("bugsweeper-score-list")!) || [];
+    scoreList.push({difficulty, timer});
+    scoreList.sort((a: {timer: number}, b: {timer: number}) => {
       return a.timer - b.timer;
     });
     scoreList = scoreList.slice(0, 10);
 
-    localStorage.setItem('bugsweeper-score-list', JSON.stringify(scoreList));
+    localStorage.setItem("bugsweeper-score-list", JSON.stringify(scoreList));
   };
 
   const convertTime = (s: number) => {
     const min = String(Math.floor(s / 60));
     const sec = String((s % 60).toFixed(0));
-    return `${min.padStart(2, '0')}:${sec.padStart(2, '0')}`;
+    return `${min.padStart(2, "0")}:${sec.padStart(2, "0")}`;
   };
 
   const toggleFullScreen = () => {

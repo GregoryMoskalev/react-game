@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import GameSettings from '../GameSettings/GameSettings';
 import Board from '../Board/Board';

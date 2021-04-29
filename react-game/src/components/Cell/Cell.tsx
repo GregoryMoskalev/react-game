@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { MineThemeContext } from '../../contexts/MineThemeContext';
-import { TileProps } from '../../utils/utils';
+import { TileProps } from '../../libs/game';
 import './Cell.scss';
 
 interface CellProps {
@@ -25,7 +25,7 @@ export const Flag: React.FC<{ flag: boolean | string | number }> = (props) => {
   return <div className="Flag material-icons">warning_amber</div>;
 };
 
-const Cell: React.FC<CellProps> = (props) => {
+export const Cell: React.FC<CellProps> = (props) => {
   let classList = 'Cell ';
   let content: JSX.Element | string = '';
   if (props.cell.open) {
